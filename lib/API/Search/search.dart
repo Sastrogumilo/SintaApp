@@ -5,7 +5,6 @@ import 'dart:async' show Future;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /* 
-
 {
     "result": {
         "authors": [],
@@ -17,28 +16,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 */
 
 class Cari{
-  ResultCariAuthor result;
+  final result;
   
   Cari({this.result,});
 
   factory Cari.fromJson(Map<String, dynamic> parsedJson){
-    return Cari(
-      result: ResultCariAuthor.fromJson(parsedJson['authors']),
-    );
+    return Cari(result: parsedJson['result']['authors']);
   }
 
-}
-
-class ResultCariAuthor{
-  final authorName;
-
-  ResultCariAuthor({
-    this.authorName,
-  });
-
-  factory ResultCariAuthor.fromJson(Map<String, dynamic> json){
-    return ResultCariAuthor(authorName: json['result']);
-  }
 }
 
 Client client = Client(); 
@@ -61,6 +46,10 @@ Future cariApi(query) async {
 
   final response = await client.get("$baseUrl"+"$input", headers: headers);
   final data = jsonDecode(response.body);
-  print(data.toString());
+  print(data);
+  //print(data.toString());
+  //Cari hasil = new Cari.fromJson(data);
+  //final hasilData = hasil.result;
+  //print(hasilData);
 
 }

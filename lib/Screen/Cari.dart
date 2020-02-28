@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sinta_app/Constant/constant.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sinta_app/API/Search/search.dart';
+//import 'package:sinta_app/API/Search/search.dart';
 
 class CariPage extends StatefulWidget 
 {
@@ -75,7 +76,9 @@ class _CariState extends State<CariPage>
     String query;
     _validateDanSave();
     query = _authorId;
-    cariApi(query);
+    final pref = await SharedPreferences.getInstance();
+    pref.setString("query", query);
+    Navigator.of(context).pushReplacementNamed(listAuthor);
   }
 
 }

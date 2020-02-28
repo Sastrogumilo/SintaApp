@@ -2,5 +2,6 @@ String
 homeScreen='/HomeScreen',
 imageSplash='/ImageSplashScreen',
 authors='/Authors',
-cari='/Cari'
+cari='/Cari',
+listAuthor='/TampilAuthor'
 ;
