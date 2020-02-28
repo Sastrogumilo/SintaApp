@@ -1,19 +1,72 @@
+import 'dart:convert';
 import 'package:http/http.dart' show Client;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async' show Future;
+//import 'package:sinta_app/API/Author/author_deserial.dart';
+//import 'dart:async';
 
 Client clientAuthor = Client();
 
-final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/overview/";
+final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/";
+final String overview = "overview/";
+final String scopus = "scopus/";
+final String google = "google/";
+final String book = "book/";
+final String ipr = "ipr/";
+final String bimbingan = "bimbingan/";
+final String research = "research/";
+final String service = "service/";
 
-Future getAuthorApi(authorId) async {
+var listFitur = ['overview/', 
+            "scopus/", 
+            "google/", 
+            "book/", 
+            "ipr/", 
+            "bimbingan/",
+            "research/",
+            "service/",];
 
-  String id = authorId;
-  
+String token;
+String id;
+Map<String, dynamic> listData;
+
+getToken() async {
   final pref = await SharedPreferences.getInstance();
-  String token = pref.getString("token");
+  token = pref.getString("token");
   print("Token saat INI "+"$token");
 
+  return token;
+}
+
+getAuthor(authorId) async {
+  
+  getToken();
+  id = authorId;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  print("ID = "+id);
+  
+  for(String fitur in listFitur){
+    //print("Fitur Sekarang = "+"$baseUrl"+"$fitur");
+    final response = await clientAuthor.get("$baseUrl"+"$fitur"+"$id", headers: headers);
+    print("Response Fitur $fitur = "+ response.statusCode.toString());
+    //print(response.body.toString());
+    //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+    //print(hasilData.name);
+    listData = jsonDecode(response.body);
+    //listData.add(data);
+  }
+  print(listData);
+    
+  return listData;
+}
+
+
+getAuthorOverview(authorId) async {
+  getToken();
+  id = authorId;
   Map<String, String> headers = {
   "Content-Type" : "application/json",
   "Authorization" : "Bearer "+"$token",
@@ -21,8 +74,158 @@ Future getAuthorApi(authorId) async {
   };
   
   id = authorId;
-  final resoponse = await clientAuthor.get("$baseUrl"+"$id", headers: headers);
-  print("Response = "+ resoponse.statusCode.toString());
-  print(resoponse.body.toString());
+  final response = await clientAuthor.get("$baseUrl"+"$overview"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
 
+
+getAuthorScopus(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = scopus;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
+
+
+getAuthorGoogle(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = google;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
+
+
+getAuthorBook(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = book;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
+
+
+getAuthorIpr(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = ipr;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
+
+
+getAuthorBimbingan(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = bimbingan;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
+
+
+getAuthorResearch(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = research;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
+}
+
+
+getAuthorService(authorId) async {
+  getToken();
+  id = authorId;
+  String isi = service;
+  Map<String, String> headers = {
+  "Content-Type" : "application/json",
+  "Authorization" : "Bearer "+"$token",
+  //"Content-Type" : "application/json"
+  };
+  
+  id = authorId;
+  final response = await clientAuthor.get("$baseUrl"+"$isi"+"$id", headers: headers);
+  print("Response = "+ response.statusCode.toString());
+  //print(response.body.toString());
+  //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
+  //print(hasilData.name);
+  final data = jsonDecode(response.body);
+  return data;
 }

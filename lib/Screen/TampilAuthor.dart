@@ -4,8 +4,9 @@ import 'package:sinta_app/Constant/constant.dart';
 import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:sinta_app/API/Author/author_deserial.dart';
+//import 'package:sinta_app/API/Author/author_deserial.dart';
 import 'package:sinta_app/API/Author/author_api.dart';
+//import 'package:sinta_app/API/Author/Overview/data.dart';
 
 class ListAuthorPage extends StatefulWidget {
   
@@ -29,7 +30,6 @@ class _ListAuthorPageState extends State<ListAuthorPage>{
     Map<String, String> headers = {
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
-    //"Content-Type" : "application/json"
     };
 
     final response = await client.get("$baseUrl"+"$input", headers: headers);
@@ -101,6 +101,7 @@ class _ListAuthorPageState extends State<ListAuthorPage>{
 
 class DetailPage extends StatelessWidget{
   final User user;
+
   DetailPage(this.user);
   
   @override
@@ -127,11 +128,9 @@ class User {
 
 idTap(user) async {
     final pref = await SharedPreferences.getInstance();
-    pref.setString("idTap", user.nidn);
-    String isi = pref.getString("idTap");
+    pref.setString("nidn", user.nidn);
+    String isi = pref.getString("nidn");
     print("NIDN = " +isi);
-    getAuthorApi(isi);
+    await getAuthorOverview(isi);
     
 }
-
-

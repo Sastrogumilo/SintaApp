@@ -75,7 +75,7 @@ class _AuthorPageState extends State<AuthorPage>
     String authorId;
     _validateDanSave();
     authorId = _authorId;
-    getAuthorApi(authorId);
+    getAuthorOverview(authorId);
   }
 
 }
