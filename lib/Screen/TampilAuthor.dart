@@ -5,7 +5,7 @@ import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 //import 'package:sinta_app/API/Author/author_deserial.dart';
-import 'package:sinta_app/API/Author/author_api.dart';
+import 'package:sinta_app/API/Author/endpoint_api.dart';
 //import 'package:sinta_app/API/Author/Overview/data.dart';
 
 class ListAuthorPage extends StatefulWidget {

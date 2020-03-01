@@ -24,7 +24,9 @@ class _CariState extends State<CariPage>
     
     return Scaffold(
       appBar: new AppBar(title: const Text("Cari Author"),
-      leading: new IconButton(icon: new Icon(Icons.arrow_back), onPressed: () => Navigator.of(context).pushReplacementNamed(homeScreen))),
+      leading: new IconButton(
+        icon: new Icon(Icons.arrow_back), 
+        onPressed: () => Navigator.of(context).pushReplacementNamed(homeScreen))),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sinta_app/API/Author/author_api.dart';
+import 'package:sinta_app/API/Author/endpoint_api.dart';
 //import 'package:sinta_app/API/Author/Overview/overview.dart';
 
 class DetailAuthorPage extends StatefulWidget{
