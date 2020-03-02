@@ -66,11 +66,11 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
       AseanBenchmark.WidgetThemes(
         titleTxt: 'Mediterranean diet',
         subTxt: 'Details',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController,
             curve:
                 Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
+        mainScreenAnimationController: widget.animationController,
       ),
     );
   }
@@ -384,49 +384,6 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
     );
   }
 
- /*Widget getAppBarUI() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 18),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Science and Technology Index',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    letterSpacing: 0.2,
-                    color: DesignThemes.grey,
-                  ),
-                ),
-                Text(
-                  'Ver-Mobile',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    letterSpacing: 0.27,
-                    color: DesignThemes.darkerText,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 50,
-            height: 50,
-            child: Image.asset('assets/image/sinta_logo2.png'),
-          )
-        ],
-      ),
-    );
-  }
-  */
 }
 
 enum CategoryType {

@@ -55,7 +55,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
         }
       }
     });
-    getToken();
+    //getToken();
     super.initState();
   }
 
@@ -66,30 +66,44 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
       AseanBenchmark.WidgetThemes(
         titleTxt: 'Mediterranean diet',
         subTxt: 'Details',
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
+        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+                parent: widget.animationController,
+                curve: Interval((1 / count) * 7, 1.0,
+                    curve: Curves.fastOutSlowIn))),
+        mainScreenAnimationController: widget.animationController,
+      ),
+    );
+    listViews.add(
+      AseanBenchmark.WidgetThemes(
+        titleTxt: 'Mediterranean diet',
+        subTxt: 'Details',
+        mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+                parent: widget.animationController,
+                curve: Interval((1 / count) * 7, 1.0,
+                    curve: Curves.fastOutSlowIn))),
+        mainScreenAnimationController: widget.animationController,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       color: DesignThemes.nearlyWhite,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
           children: <Widget>[
-            
+            // Padding Top
             SizedBox(
               height: MediaQuery.of(context).padding.top,
             ),
-            
+            // App Bar           
             getAppBarUI(),
-            
+            // Layout
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
@@ -97,10 +111,10 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
                   child: Column(
                     children: <Widget>[
                       getSearchBarUI(),
-                      getCategoryUI(),
                       Flexible(
-                        child: getPopularCourseUI(),
-                      ),
+                        
+                        child: getMainListViewUI()
+                      )
                     ],
                   ),
                 ),
@@ -370,6 +384,42 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
     );
   }
 
+  Future<bool> getData() async {
+    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
+    print('GETDATA RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN');
+    return true;
+  }
+  
+  Widget getMainListViewUI() {
+    return FutureBuilder<bool>(
+      future: getData(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (!snapshot.hasData) {
+          print("TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTTTTTTTTTTTTTTTTTTTT");
+          print(snapshot);
+          return const SizedBox();
+        } else {
+          print("BUILDERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+          return ListView.builder(
+            controller: scrollController,
+            padding: EdgeInsets.only(
+              top: AppBar().preferredSize.height +
+                  MediaQuery.of(context).padding.top +
+                  24,
+              bottom: 62 + MediaQuery.of(context).padding.bottom,
+            ),
+            itemCount: listViews.length,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (BuildContext context, int index) {
+              widget.animationController.forward();
+              print(listViews[index]);
+              return listViews[index];
+            },
+          );
+        }
+      },
+    );
+  }
 }
 
 enum CategoryType {

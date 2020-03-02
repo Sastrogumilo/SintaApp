@@ -84,7 +84,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           tabIconsList: tabIconsList,
           addClick: () {},
           changeIndex: (int index) {
-            if (index == 0 || index == 2) {
+            if (index == 0) {
               animationController.reverse().then<dynamic>((data) {
                 if (!mounted) {
                   return;
