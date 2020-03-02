@@ -1,36 +1,24 @@
+import 'dart:math';
+
 /// Example of a stacked area chart.
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:sinta_app/theme/design_theme.dart';
 
-class SubscriberSeries {
-  final String year;
-  final int subscribers;
-  final charts.Color barColor;
+import '../../../../main.dart';
 
-  SubscriberSeries(
-      {@required this.year,
-      @required this.subscribers,
-      @required this.barColor});
-}
+class StackedAreaLineChart extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
+  final String title;
 
-class SubscriberChart extends StatelessWidget {
-  final List<SubscriberSeries> data;
-
-  SubscriberChart({@required this.data});
+  StackedAreaLineChart(this.seriesList, this.title, {this.animate});
 
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<SubscriberSeries, String>> series = [
-      charts.Series(
-          id: "Subscribers",
-          data: data,
-          domainFn: (SubscriberSeries series, _) => series.year,
-          measureFn: (SubscriberSeries series, _) => series.subscribers,
-          colorFn: (SubscriberSeries series, _) => series.barColor)
-    ];
-
+                
     return Container(
-      height: 400,
+      height: 600,
       padding: EdgeInsets.all(20),
       child: Card(
         child: Padding(
@@ -38,11 +26,14 @@ class SubscriberChart extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "World of Warcraft Subscribers by Year",
+                title,
                 style: Theme.of(context).textTheme.body2,
               ),
               Expanded(
-                child: charts.BarChart(series, animate: true),
+                child: charts.LineChart(seriesList,
+                  defaultRenderer: new charts.LineRendererConfig(includeArea: true, stacked: true),
+                  animate: false
+                ),
               )
             ],
           ),
@@ -51,4 +42,12 @@ class SubscriberChart extends StatelessWidget {
     );
   }
 
+}
+
+/// Sample linear data type.
+class LinearSales {
+  final int year;
+  final int sales;
+
+  LinearSales(this.year, this.sales);
 }

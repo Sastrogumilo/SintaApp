@@ -5,7 +5,7 @@ import 'package:sinta_app/main.dart';
 import 'package:sinta_app/Screen/Search/index.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-import 'asean_chart.dart' as Asean;
+import 'author_chart.dart' as Author;
 
 class WidgetThemes extends StatefulWidget{
   const WidgetThemes({Key key, 
@@ -27,44 +27,20 @@ class WidgetThemes extends StatefulWidget{
 
 class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixin {
   CategoryType categoryType = CategoryType.ui;
-  
-  List<charts.Series<Asean.LinearSales, num>> dataLinear = [
-    new charts.Series<Asean.LinearSales, int>(
-        id: 'Desktop',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (Asean.LinearSales sales, _) => sales.year,
-        measureFn: (Asean.LinearSales sales, _) => sales.sales,
+  final List<charts.Series<Author.LinearSales, num>> dataPie = [
+      new charts.Series<Author.LinearSales, int>(
+        id: 'Sales',
+        domainFn: (Author.LinearSales sales, _) => sales.year,
+        measureFn: (Author.LinearSales sales, _) => sales.sales,
         data: [
-          new Asean.LinearSales(0, 200),
-          new Asean.LinearSales(1, 300),
-          new Asean.LinearSales(2, 350),
-          new Asean.LinearSales(3, 400),
+          new Author.LinearSales(0, 100),
+          new Author.LinearSales(1, 75),
+          new Author.LinearSales(2, 25),
+          new Author.LinearSales(3, 5),
         ],
+        // Set a label accessor to control the text of the arc label.
+        labelAccessorFn: (Author.LinearSales row, _) => '${row.year}: ${row.sales}',
       ),
-    new charts.Series<Asean.LinearSales, int>(
-      id: 'Tablet',
-      colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-      domainFn: (Asean.LinearSales sales, _) => sales.year,
-      measureFn: (Asean.LinearSales sales, _) => sales.sales,
-      data: [
-        new Asean.LinearSales(0, 200),
-        new Asean.LinearSales(1, 30),
-        new Asean.LinearSales(2, 80),
-        new Asean.LinearSales(3, 90),
-      ],
-    ),
-    new charts.Series<Asean.LinearSales, int>(
-      id: 'Mobile',
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      domainFn: (Asean.LinearSales sales, _) => sales.year,
-      measureFn: (Asean.LinearSales sales, _) => sales.sales,
-      data: [
-        new Asean.LinearSales(0, 100),
-        new Asean.LinearSales(1, 202),
-        new Asean.LinearSales(2, 90),
-        new Asean.LinearSales(3, 14),
-      ],
-    ),
   ];  
 
   Future<bool> getData() async {
@@ -97,8 +73,8 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
-                  child: Asean.StackedAreaLineChart(
-                    dataLinear,
+                  child: Author.DonutAutoLabelChart(
+                    dataPie,
                     widget.titleTxt,
                   ),
                 ),

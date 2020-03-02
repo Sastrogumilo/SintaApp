@@ -8,6 +8,7 @@ import 'package:sinta_app/initialization.dart';
 import 'package:sinta_app/main.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:sinta_app/Screen/Search/benchmark/asean/widget_themes.dart' as AseanBenchmark;
+import 'package:sinta_app/Screen/Search/benchmark/author/widget_themes.dart' as AuthorBenchmark;
 
 class ScreenLayout extends StatefulWidget {
   static String tag = 'author-page';
@@ -61,7 +62,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
 
   void addAllListData() {
     const int count = 9;
-
+    
     listViews.add(
       AseanBenchmark.WidgetThemes(
         titleTxt: 'Mediterranean diet',
@@ -74,8 +75,9 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
         mainScreenAnimationController: widget.animationController,
       ),
     );
+
     listViews.add(
-      AseanBenchmark.WidgetThemes(
+      AuthorBenchmark.WidgetThemes(
         titleTxt: 'Mediterranean diet',
         subTxt: 'Details',
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -112,7 +114,6 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
                     children: <Widget>[
                       getSearchBarUI(),
                       Flexible(
-                        
                         child: getMainListViewUI()
                       )
                     ],
@@ -403,10 +404,11 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
           return ListView.builder(
             controller: scrollController,
             padding: EdgeInsets.only(
-              top: AppBar().preferredSize.height +
+              /*top: AppBar().preferredSize.height +
                   MediaQuery.of(context).padding.top +
-                  24,
-              bottom: 62 + MediaQuery.of(context).padding.bottom,
+                  0,*/
+              top: 0,
+              bottom: 102 + MediaQuery.of(context).padding.bottom,
             ),
             itemCount: listViews.length,
             scrollDirection: Axis.vertical,
