@@ -8,23 +8,23 @@ import 'dart:convert';
 
 Client clientListView = Client();
 
-class UnivListView extends StatefulWidget {
-  const UnivListView({Key key, this.callBack}) : super(key: key);
+class PopularAuthorListView extends StatefulWidget {
+  const PopularAuthorListView({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
-  _UnivListViewState createState() => _UnivListViewState();
+  _PopularAuthorListViewState createState() => _PopularAuthorListViewState();
 }
 
-class _UnivListViewState extends State<UnivListView>
+class _PopularAuthorListViewState extends State<PopularAuthorListView>
     with TickerProviderStateMixin {
 
-  Future<List<Univ>> _getUniv() async {
+  Future<List<Authors>> _getAuthors() async {
 
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
 
-    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/affiliations';
+    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/authors';
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
@@ -35,17 +35,17 @@ class _UnivListViewState extends State<UnivListView>
     print(response.statusCode.toString());
     final dataJson = jsonDecode(response.body);
     Cari data = new Cari.fromJson(dataJson);
-    //print(data.affiliations.toString());
+    //print(data.authors.toString());
 
     //Authors({this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img = 'assets/design_course/interFace1.png', });
 
-    List<Univ> univs = [];
-    for(var u in data.affiliations){
-      Univ univ = Univ(u["kode_pt"].toString(), u["afiliasi_name"].toString(), u["city"]["name"].toString(), u["afiliasi_abbrev"].toString(), u["rank"].toString(), u["img"].toString());
-      univs.add(univ);
+    List<Authors> authors = [];
+    for(var u in data.authors){
+      Authors author = Authors(u['nidn'].toString(), u['fullname'].toString(), u['google_hindex'].toString(), u['scopus_hindex'].toString(), "assets/design_course/interFace1.png");
+      authors.add(author);
     }
-    print(univs.length.toString());
-    return univs;
+    print(authors.length.toString());
+    return authors;
   }
   
 
@@ -67,7 +67,7 @@ class _UnivListViewState extends State<UnivListView>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FutureBuilder(
-        future: _getUniv(),
+        future: _getAuthors(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //print(snapshot.data.length.toString());
           if (snapshot.data == null) {
@@ -95,7 +95,7 @@ class _UnivListViewState extends State<UnivListView>
                   return CategoryView(
                     
                     callback: () {
-                      getUnivNIDN(snapshot.data[index]);
+                      //getAuthorNIDN(snapshot.data[index]);
                       widget.callBack();
                     },
                     category: snapshot.data[index],
@@ -128,7 +128,7 @@ class CategoryView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback callback;
-  final Univ category;
+  final Authors category;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -145,7 +145,7 @@ class CategoryView extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                //getUnivNIDN(category);
+                getAuthorNIDN(category);
                 callback();
               },
               child: SizedBox(
@@ -200,7 +200,7 @@ class CategoryView extends StatelessWidget {
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  category.kota,
+                                                  category.googleHindex,
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
@@ -214,7 +214,7 @@ class CategoryView extends StatelessWidget {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Text(
-                                                        category.sintaScore,
+                                                        category.googleHindex,
                                                         textAlign:
                                                             TextAlign.left,
                                                         style: TextStyle(
@@ -275,10 +275,10 @@ class CategoryView extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(8.0)),
+                                const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
-                                aspectRatio: 0.25,
-                                child: Image.network(category.img, height: 2.5, width: 2.5,)),
+                                aspectRatio: 1.28,
+                                child: Image.asset(category.img.toString())),
                           ),
                         ),
                       ),
@@ -294,32 +294,31 @@ class CategoryView extends StatelessWidget {
   }
 }
 
-class Univ{
+class Authors{
   final name;
-  final sintaScore;
-  final kota;
-  final website;
+  final scopusHindex;
+  final googleHindex;
   final img;
-  final kodePT;
-  Univ(this.kodePT, this.name, this.kota, this.website, this.sintaScore, this.img);
+  final nidn;
+  Authors(this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img);
 
 }
 
 class Cari{
-  final affiliations;
+  final authors;
   
-  Cari({this.affiliations,});
+  Cari({this.authors,});
 
   factory Cari.fromJson(Map<String, dynamic> parsedJson){
-    return Cari(affiliations: parsedJson['affiliations']);
+    return Cari(authors: parsedJson['authors']);
   }
 }
 
-getUnivNIDN(category) async {
+getAuthorNIDN(category) async {
   var pref = await SharedPreferences.getInstance();
   //print(category.nidn);
-  pref.setString("kodePT", category.kodePT);
-  String isi = pref.getString("kodePT");
+  pref.setString("nidn", category.nidn);
+  String isi = pref.getString("nidn");
   print("NIDN = " +isi);
   //await getAuthorNIDN(isi);
 

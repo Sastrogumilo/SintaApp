@@ -66,7 +66,7 @@ class ParseData{
       scopusArticle: parsedJson['author']['scopus_article'],
       googleArticle: parsedJson['author']['google_article'],
       googleCitations: parsedJson['author']['google_citations'],
-      scopusCitation: parsedJson['author']['scopus_citations'],
+      scopusCitation: parsedJson['author']['scopus_citation'],
       googleGindex: parsedJson['author']['google_gindex'],
       googleHindex: parsedJson['author']['google_hindex'],
       googleI10: parsedJson['author']['google_i10'],

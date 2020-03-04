@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:sinta_app/Constant/constant.dart';
 import 'package:sinta_app/Screen/Cari.dart';

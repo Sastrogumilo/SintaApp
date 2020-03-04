@@ -1,7 +1,6 @@
 // import 'package:sinta_app/Screen/Search/benchmark/asean/asean_chart.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/main.dart';
 import 'package:sinta_app/Screen/Search/index.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 

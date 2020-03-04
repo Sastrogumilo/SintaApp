@@ -2,7 +2,6 @@ import 'package:sinta_app/Constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinta_app/initialization.dart';
-import 'package:sinta_app/Screen/Layout/bottom_navigation.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

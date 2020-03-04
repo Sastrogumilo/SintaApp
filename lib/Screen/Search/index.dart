@@ -1,10 +1,8 @@
-import 'package:sinta_app/Constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinta_app/design_course/category_list_view.dart';
 import 'package:sinta_app/design_course/course_info_screen.dart';
 import 'package:sinta_app/design_course/popular_course_list_view.dart';
-import 'package:sinta_app/initialization.dart';
 import 'package:sinta_app/main.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:sinta_app/Screen/Search/benchmark/asean/widget_themes.dart' as AseanBenchmark;

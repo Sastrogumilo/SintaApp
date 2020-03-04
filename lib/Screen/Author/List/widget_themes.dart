@@ -1,8 +1,9 @@
-import 'package:sinta_app/design_course/course_info_screen.dart';
-import 'package:sinta_app/design_course/popular_course_list_view.dart';
+//import 'package:sinta_app/design_course/course_info_screen.dart';
+import 'package:sinta_app/Screen/Author/Detail/detail.dart';
+//import 'package:sinta_app/design_course/popular_course_list_view.dart';
+import 'package:sinta_app/Screen/Author/List/list.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/API/Author/endpoint_api.dart';
 
 class WidgetThemes extends StatelessWidget {
   final String titleTxt;
@@ -28,7 +29,7 @@ class WidgetThemes extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Popular Course',
+              'Popular Author',
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -38,12 +39,12 @@ class WidgetThemes extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: PopularCourseListView(
+              child: PopularAuthorListView(
                 callBack: () {
                   Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => CourseInfoScreen(),
+                      builder: (BuildContext context) => AuthorInfoScreen(),
                     ),
                   );
                 },
@@ -58,7 +59,7 @@ class WidgetThemes extends StatelessWidget {
       Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => CourseInfoScreen(),
+          builder: (BuildContext context) => AuthorInfoScreen(),
         ),
       );
     }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:sinta_app/design_course/design_course_app_theme.dart';
-import 'package:sinta_app/API/Afiliation/endpoint_api.dart';
+import 'package:sinta_app/API/Author/endpoint_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sinta_app/API/Afiliation/Overview/data.dart';
+import 'package:sinta_app/API/Author/Overview/data.dart';
 
-class UnivInfoScreen extends StatefulWidget {
+class AuthorInfoScreen extends StatefulWidget {
   @override
-  _UnivInfoScreenState createState() => _UnivInfoScreenState();
+  _AuthorInfoScreenState createState() => _AuthorInfoScreenState();
 }
 
-class _UnivInfoScreenState extends State<UnivInfoScreen>
+class _AuthorInfoScreenState extends State<AuthorInfoScreen>
     with TickerProviderStateMixin {
   final double infoHeight = 364.0;
   AnimationController animationController;
@@ -45,26 +45,26 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
     });
   }
 
-  Future<DetailUniv> _getUnivData() async{
+  Future<DetailAuthor> _getAuthorData() async{
 
     var pref =  await SharedPreferences.getInstance();
-    String id = pref.getString("kodePT");
-    print("KodePT Detail = "+id);
+    String id = pref.getString("nidn");
+    print("NIDN Detail = "+id);
     //String id = '44';
-    var data = await getAffiliationOverview(id);
+    var data = await getAuthorOverview(id);
 
-    ParseDataAffiliation response = new ParseDataAffiliation.fromJson(data);
-    DetailUniv univ = DetailUniv(response.name, 
-                                  response.website, 
-                                  response.rank, 
-                                  response.scopusJournal, 
-                                  response.scopusBookChapter, 
-                                  response.scopusConference, 
-                                  response.img, 
-                                  response.sintaScoreV23y,
-                                  response.deskripsi);
+    ParseData response = new ParseData.fromJson(data);
     
-    return univ;
+    DetailAuthor author = DetailAuthor(response.name, 
+                                        response.univ, 
+                                        response.sintaScorev23y.toString(), 
+                                        response.nationalRank.toString(), 
+                                        response.googleArticle.toString(), 
+                                        response.scopusArticle.toString(),
+                                        response.scopusCitation.toString());
+    print(response.scopusCitation);
+    return author;
+
   }
 
   @override
@@ -74,7 +74,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
         24.0;
     return Container(
       child: FutureBuilder(
-        future: _getUnivData(),
+        future: _getAuthorData(),
         builder: (BuildContext context, AsyncSnapshot snapshot){
            if(snapshot.data == null){
                 return Container(
@@ -100,7 +100,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                     ),
                     child: Center(
                       child:ClipOval(
-                        child : Image.network(snapshot.data.img, height: 180, width: 180, fit: BoxFit.cover,)
+                        child : Image.asset('assets/design_course/webInterFace.png', height: 180, width: 180, fit: BoxFit.cover,)
                       ),
                     ),
                   ),
@@ -161,7 +161,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  snapshot.data.website,
+                                  snapshot.data.univ,
                                   //'\$28.99',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
@@ -176,7 +176,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                     children: <Widget>[
                                       Text(
                                         //'4.3',
-                                        snapshot.data.rank,
+                                        snapshot.data.nationalRank,
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
@@ -206,9 +206,9 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                   //getTimeBoxUI('24', 'Classe'),
                                   //getTimeBoxUI('2hours', 'Time'),
                                   //getTimeBoxUI('24', 'Seat'),
-                                  getTimeBoxUI(snapshot.data.scopusJurnal.toString(), 'Scopus Jurnal'),
-                                  getTimeBoxUI(snapshot.data.scopusBook.toString(), 'Scopus BookChap'),
-                                  getTimeBoxUI(snapshot.data.scopusConf.toString(), 'Scopus Conference')
+                                  getTimeBoxUI(snapshot.data.scopusArticle, 'Scopus'),
+                                  getTimeBoxUI(snapshot.data.googleArticle, 'Google'),
+                                  getTimeBoxUI(snapshot.data.sintaScorev23y.toString(), 'Sinta 3y')
                                 ],
                               ),
                             ),
@@ -221,8 +221,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                 padding: const EdgeInsets.only(
                                     left: 16, right: 16, top: 8, bottom: 8),
                                 child: Text(
-                                  //'Afiliasi Deskripsi',
-                                  snapshot.data.deskripsi,
+                                  'Detail Author',
                                   //'Lorem ipsum is simply dummy text of printing & typesetting industry, Lorem ipsum is simply dummy text of printing & typesetting industry.',
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
@@ -289,7 +288,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                       ),
                                       child: Center(
                                         child: Text(
-                                          snapshot.data.scopus3y,
+                                          snapshot.data.scopuscitat,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -422,26 +421,25 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
   }
 }
 
-class DetailUniv{
-  final name;
-  final website;
-  final rank;
-  final scopusJurnal;
+class DetailAuthor{
+  final String name;
+  final String univ;
+  final sintaScorev23y;
+  final nationalRank;
   //final scopusScore;
-  final scopusBook;
-  final scopusConf;
-  final img;
-  final sinta3y;
-  final deskripsi;
+  final scopusArticle;
+  final googleArticle;
+  final scopuscitat;
 
-  DetailUniv(
+  DetailAuthor(
     this.name,
-    this.website,
-    this.rank,
-    this.scopusJurnal,
-    this.scopusBook,
-    this.scopusConf,
-    this.img,
-    this.sinta3y,this.deskripsi,
+    this.univ,
+    this.sintaScorev23y,
+    this.nationalRank,
+    this.googleArticle,
+    this.scopusArticle,
+    this.scopuscitat
   );
 }
+
+

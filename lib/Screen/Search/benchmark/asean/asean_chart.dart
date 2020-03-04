@@ -1,11 +1,8 @@
-import 'dart:math';
 
 /// Example of a stacked area chart.
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:sinta_app/theme/design_theme.dart';
 
-import '../../../../main.dart';
 
 class StackedAreaLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;

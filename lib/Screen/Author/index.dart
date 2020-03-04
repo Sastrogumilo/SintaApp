@@ -1,22 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/design_course/course_info_screen.dart';
-import 'package:sinta_app/design_course/popular_course_list_view.dart';
+//import 'package:sinta_app/design_course/course_info_screen.dart';
+import 'package:sinta_app/Screen/Author/Detail/detail.dart';
+import 'package:sinta_app/Screen/Author/List/list.dart';
 import 'package:sinta_app/initialization.dart';
 import 'package:sinta_app/theme/design_theme.dart';
-import 'package:sinta_app/Screen/Author/List/widget_themes.dart' as ListAuthor;
+//import 'package:sinta_app/Screen/Author/List/widget_themes.dart' as ListAuthor;
 import 'package:sinta_app/Screen/Layout/app_header.dart';
 
-class ScreenLayout extends StatefulWidget {
+class ScreenLayoutAuthor extends StatefulWidget {
   static String tag = 'author-page';
-  const ScreenLayout({Key key, this.animationController}) : super(key: key);
+  const ScreenLayoutAuthor({Key key, this.animationController}) : super(key: key);
 
   final AnimationController animationController;
   @override
-  ScreenLayoutState createState() => new ScreenLayoutState();
+  ScreenLayoutAuthorState createState() => new ScreenLayoutAuthorState();
 }
 
-class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixin{
+class ScreenLayoutAuthorState extends State<ScreenLayoutAuthor> with TickerProviderStateMixin{
   Animation<double> topBarAnimation;
   List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
@@ -219,7 +220,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
         children: <Widget>[
 
           Flexible(
-            child: PopularCourseListView(
+            child: PopularAuthorListView(
               callBack: () {
                 moveToK();
               },
@@ -235,7 +236,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => CourseInfoScreen(),
+        builder: (BuildContext context) => AuthorInfoScreen(),
       ),
     );
   }
