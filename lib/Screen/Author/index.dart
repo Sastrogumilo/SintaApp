@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:sinta_app/design_course/course_info_screen.dart';
 import 'package:sinta_app/Screen/Author/Detail/detail.dart';
 import 'package:sinta_app/Screen/Author/List/list.dart';
 import 'package:sinta_app/initialization.dart';
+import 'package:sinta_app/main.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 //import 'package:sinta_app/Screen/Author/List/widget_themes.dart' as ListAuthor;
 import 'package:sinta_app/Screen/Layout/app_header.dart';
+import 'package:sinta_app/Screen/Author/List/listHasil.dart';
 
 class ScreenLayoutAuthor extends StatefulWidget {
   static String tag = 'author-page';
@@ -18,6 +21,10 @@ class ScreenLayoutAuthor extends StatefulWidget {
 }
 
 class ScreenLayoutAuthorState extends State<ScreenLayoutAuthor> with TickerProviderStateMixin{
+
+  //String _isi;
+  var _formKey = GlobalKey<FormState>();
+
   Animation<double> topBarAnimation;
   List<Widget> listViews = <Widget>[];
   final ScrollController scrollController = ScrollController();
@@ -116,6 +123,7 @@ class ScreenLayoutAuthorState extends State<ScreenLayoutAuthor> with TickerProvi
                   height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: <Widget>[
+                      getSearchBarUI(),
                       Flexible(
                         child: getPopularCourseUI(),
                       ),
@@ -128,6 +136,95 @@ class ScreenLayoutAuthorState extends State<ScreenLayoutAuthor> with TickerProvi
         ),
       ),
     );
+  }
+  Widget getSearchBarUI() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 18),
+      child: Form(
+        key: _formKey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            height: 64,
+            child: Form(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: HexColor('#F8FAFB'),
+                    borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(13.0),
+                      bottomLeft: Radius.circular(13.0),
+                      topLeft: Radius.circular(13.0),
+                      topRight: Radius.circular(13.0),
+                    ),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 16, right: 16),
+                          child: TextFormField(
+                            style: TextStyle(
+                              fontFamily: 'WorkSans',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: DesignThemes.nearlyBlue,
+                            ),
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              labelText: 'Cari Author',
+                              border: InputBorder.none,
+                              helperStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: HexColor('#B9BABC'),
+                              ),
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                letterSpacing: 0.2,
+                                color: HexColor('#B9BABC'),
+                              ),
+                            ),
+                            onFieldSubmitted: (value){
+                              getIsi(value);
+                              //getHasilCariAuthor(value);
+                              moveToHasil();
+                              //tampilHasil(value);
+                            },
+                            validator: (value){
+                              if(value == null){
+                               Text('Tolong Diisikan ...');
+                              } return ;
+                            },
+                            //onSaved: (value){
+                             // String _isi = value;
+                            //},
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: Icon(Icons.search, color: HexColor('#B9BABC')),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+            
+          ),
+          const Expanded(
+            child: SizedBox(),
+          )
+        ],
+      ),
+    ));
   }
 
   Widget getMainListViewUI() {
@@ -231,6 +328,26 @@ class ScreenLayoutAuthorState extends State<ScreenLayoutAuthor> with TickerProvi
       ),
     );
   }
+  Widget getHasilCariAuthor(nama) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+
+          Flexible(
+            child: HasilSearchAuthor(
+              callBack: () {
+                moveToK();
+              },
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
 
   void moveToK() {
     Navigator.push<dynamic>(
@@ -239,6 +356,25 @@ class ScreenLayoutAuthorState extends State<ScreenLayoutAuthor> with TickerProvi
         builder: (BuildContext context) => AuthorInfoScreen(),
       ),
     );
+  }
+  void moveToHasil() {
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => HasilSearchAuthor(),
+      ),
+    );
+  }
+
+getIsi(isi) async {
+
+  print(isi.toString());
+  var pref = await SharedPreferences.getInstance();
+
+  pref.setString('nama', isi);
+  //String test = pref.getString('nama');
+  //print("TEST = $test");
+
   }
 
 }

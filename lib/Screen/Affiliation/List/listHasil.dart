@@ -5,33 +5,38 @@ import 'package:sinta_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
+import 'package:sinta_app/Screen/Affiliation/Detail/detail.dart';
 
 Client clientListView = Client();
 
-class UnivListView extends StatefulWidget {
-  const UnivListView({Key key, this.callBack}) : super(key: key);
+class HasilSearchUniv extends StatefulWidget {
+  const HasilSearchUniv({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
-  _UnivListViewState createState() => _UnivListViewState();
+  _HasilSearchUnivState createState() => _HasilSearchUnivState();
 }
 
-class _UnivListViewState extends State<UnivListView>
+class _HasilSearchUnivState extends State<HasilSearchUniv>
     with TickerProviderStateMixin {
 
   Future<List<Univ>> _getUniv() async {
 
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
+    String nama = pref.getString('nama');
+    
+    final String items = '&items=1000';
 
-    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/affiliations?items=1000';
+    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/affiliations?q=';
+
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await clientListView.get("$baseUrl", headers: headers);
+    final response = await clientListView.get("$baseUrl"+'$nama'+'$items', headers: headers);
     print(response.statusCode.toString());
     final dataJson = jsonDecode(response.body);
     Cari data = new Cari.fromJson(dataJson);
@@ -64,14 +69,16 @@ class _UnivListViewState extends State<UnivListView>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Scaffold(body:
+    Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FutureBuilder(
         future: _getUniv(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //print(snapshot.data.length.toString());
           if (snapshot.data == null) {
-            return const SizedBox();
+            return Align(alignment: Alignment.center,
+            child: CircularProgressIndicator(),);
           } else {
             print(snapshot.data.length.toString());
             return GridView(
@@ -95,7 +102,7 @@ class _UnivListViewState extends State<UnivListView>
                   return CategoryView(
                     
                     callback: () {
-                      getUnivNIDN(snapshot.data[index]);
+                      //getUnivNIDN(snapshot.data[index]);
                       widget.callBack();
                     },
                     category: snapshot.data[index],
@@ -114,7 +121,7 @@ class _UnivListViewState extends State<UnivListView>
           }
         },
       ),
-    );
+    ));
   }
 }
 
@@ -145,8 +152,9 @@ class CategoryView extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                //getUnivNIDN(category);
-                callback();
+                getUnivNIDN(category);
+                //callback();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UnivInfoScreen()));
               },
               child: SizedBox(
                 height: 280,

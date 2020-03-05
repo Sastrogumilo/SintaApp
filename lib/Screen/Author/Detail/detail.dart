@@ -141,13 +141,15 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 32.0, left: 18, right: 16),
-                            child: Text( 
+                            child: 
+                           
+                            Text( 
                               snapshot.data.name, // Nama Author
                               //'Web Design\nCourse',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 22,
+                                fontSize: 30,
                                 letterSpacing: 0.27,
                                 color: DesignCourseAppTheme.darkerText,
                               ),
@@ -160,17 +162,18 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
+                                Flexible(child: 
                                 Text(
                                   snapshot.data.univ,
                                   //'\$28.99',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w200,
-                                    fontSize: 15,
+                                    fontSize: 20,
                                     letterSpacing: 0.01,
                                     color: DesignCourseAppTheme.nearlyBlue,
                                   ),
-                                ),
+                                )),
                                 Container(
                                   child: Row(
                                     children: <Widget>[
@@ -196,12 +199,25 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                               ],
                             ),
                           ),
+                          /*
+                          AnimatedOpacity(opacity: opacity1, 
+                          duration: const Duration(milliseconds: 500),
+                          child: Padding(padding: const EdgeInsets.only(left: 16, right: 10,),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                            Text("Scopus", textAlign: TextAlign.center,),
+                                ],
+                              )
+                            ),
+                          ),
+                          */
                           AnimatedOpacity(
                             duration: const Duration(milliseconds: 500),
                             opacity: opacity1,
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   //getTimeBoxUI('24', 'Classe'),
                                   //getTimeBoxUI('2hours', 'Time'),
@@ -213,8 +229,8 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: AnimatedOpacity(
+                          /*
+                            AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
                               opacity: opacity2,
                               child: Padding(
@@ -226,7 +242,7 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w200,
-                                    fontSize: 14,
+                                    fontSize: 20,
                                     letterSpacing: 0.27,
                                     color: DesignCourseAppTheme.grey,
                                   ),
@@ -235,7 +251,7 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                 ),
                               ),
                             ),
-                          ),
+                          */
                           AnimatedOpacity(
                             duration: const Duration(milliseconds: 500),
                             opacity: opacity3,

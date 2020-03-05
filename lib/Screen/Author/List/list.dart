@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 
+enum LoadMoreStatus {LOADING, STABLE}
+
 Client clientListView = Client();
 
 class PopularAuthorListView extends StatefulWidget {
@@ -19,42 +21,61 @@ class PopularAuthorListView extends StatefulWidget {
 class _PopularAuthorListViewState extends State<PopularAuthorListView>
     with TickerProviderStateMixin {
 
-  Future<List<Authors>> _getAuthors() async {
+  ScrollController _scrollController;
+  
+  
+  int items = 1000;
+  List<Authors> authors = [];
+  Future<List<Authors>> _getAuthors(int items) async {
 
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-
-    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/authors';
+    print("Items = "+items.toString());
+    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/authors?items=';
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await clientListView.get("$baseUrl", headers: headers);
+    final response = await clientListView.get("$baseUrl"+'$items', headers: headers);
     print(response.statusCode.toString());
     final dataJson = jsonDecode(response.body);
     Cari data = new Cari.fromJson(dataJson);
     //print(data.authors.toString());
 
     //Authors({this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img = 'assets/design_course/interFace1.png', });
-
-    List<Authors> authors = [];
+    
+    
     for(var u in data.authors){
-      Authors author = Authors(u['nidn'].toString(), u['fullname'].toString(), u['google_hindex'].toString(), u['scopus_hindex'].toString(), "assets/design_course/interFace1.png");
+      Authors author = Authors(u['nidn'].toString(), u['fullname'].toString(), u['affiliation']['name'].toString(), "assets/design_course/interFace1.png");
       authors.add(author);
     }
     print(authors.length.toString());
     return authors;
   }
-  
 
   AnimationController animationController;
+
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
+    _scrollController = new ScrollController(
+      initialScrollOffset: 0.0,
+    );
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
+      _getAuthors(items = items + 10);
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<bool> getData() async {
@@ -67,22 +88,25 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FutureBuilder(
-        future: _getAuthors(),
+        future: this._getAuthors(items),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //print(snapshot.data.length.toString());
           if (snapshot.data == null) {
-            return const SizedBox();
+            return Align(alignment: Alignment.center,
+            child: CircularProgressIndicator(),);
           } else {
-            print(snapshot.data.length.toString());
+            var list = snapshot.data;
+
             return GridView(
+              controller: _scrollController,
               padding: const EdgeInsets.all(8),
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
                 //Category.popularCourseList.length,
-                snapshot.data.length,
+                list.length,
                 (int index) {
-                  final int count = snapshot.data.length; //Category.popularCourseList.length;
+                  final int count = list.length; //Category.popularCourseList.length;
                   final Animation<double> animation =
                       Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
@@ -98,7 +122,7 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
                       //getAuthorNIDN(snapshot.data[index]);
                       widget.callBack();
                     },
-                    category: snapshot.data[index],
+                    category: list[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -107,7 +131,7 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 32.0,
-                crossAxisSpacing: 32.0,
+                crossAxisSpacing: 16.0,
                 childAspectRatio: 0.8,
               ),
             );
@@ -199,44 +223,19 @@ class CategoryView extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
+                                                Flexible(child:
                                                 Text(
                                                   category.googleHindex,
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
+                                                    fontSize: 14,
                                                     letterSpacing: 0.27,
                                                     color: DesignCourseAppTheme
                                                         .grey,
                                                   ),
                                                 ),
-                                                Container(
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Text(
-                                                        category.googleHindex,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w200,
-                                                          fontSize: 18,
-                                                          letterSpacing: 0.27,
-                                                          color:
-                                                              DesignCourseAppTheme
-                                                                  .grey,
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.star,
-                                                        color:
-                                                            DesignCourseAppTheme
-                                                                .nearlyBlue,
-                                                        size: 20,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -252,7 +251,7 @@ class CategoryView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 48,
+                            height: 8,
                           ),
                         ],
                       ),
@@ -277,7 +276,7 @@ class CategoryView extends StatelessWidget {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
-                                aspectRatio: 1.28,
+                                aspectRatio: 1.48,
                                 child: Image.asset(category.img.toString())),
                           ),
                         ),
@@ -296,11 +295,11 @@ class CategoryView extends StatelessWidget {
 
 class Authors{
   final name;
-  final scopusHindex;
+  
   final googleHindex;
   final img;
   final nidn;
-  Authors(this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img);
+  Authors(this.nidn, this.name, this.googleHindex, this.img);
 
 }
 

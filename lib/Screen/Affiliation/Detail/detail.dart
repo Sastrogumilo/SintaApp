@@ -54,15 +54,15 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
     var data = await getAffiliationOverview(id);
 
     ParseDataAffiliation response = new ParseDataAffiliation.fromJson(data);
-    DetailUniv univ = DetailUniv(response.name, 
-                                  response.website, 
-                                  response.rank, 
-                                  response.scopusJournal, 
-                                  response.scopusBookChapter, 
-                                  response.scopusConference, 
+    DetailUniv univ = DetailUniv(response.fullname, 
+                                  response.website,
+                                  response.rank.toString(), 
+                                  response.scopusJournal.toString(), 
+                                  response.scopusBookChapter.toString(), 
+                                  response.scopusConference.toString(), 
                                   response.img, 
-                                  response.sintaScoreV23y,
-                                  response.deskripsi);
+                                  response.sintaScore3.toString(),
+                                  response.deskripsi.toString());
     
     return univ;
   }
@@ -79,7 +79,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
            if(snapshot.data == null){
                 return Container(
                   child: Center(
-                    child: Text("Loading"),
+                    child: CircularProgressIndicator(),
                     
                   ),
                 );
@@ -141,7 +141,8 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 32.0, left: 18, right: 16),
-                            child: Text( 
+                            child:
+                            Text( 
                               snapshot.data.name, // Nama Author
                               //'Web Design\nCourse',
                               textAlign: TextAlign.left,
@@ -202,13 +203,15 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                //crossAxisAlignment: CrossAxisAlignment.baseline ,
                                 children: <Widget>[
                                   //getTimeBoxUI('24', 'Classe'),
                                   //getTimeBoxUI('2hours', 'Time'),
                                   //getTimeBoxUI('24', 'Seat'),
-                                  getTimeBoxUI(snapshot.data.scopusJurnal.toString(), 'Scopus Jurnal'),
-                                  getTimeBoxUI(snapshot.data.scopusBook.toString(), 'Scopus BookChap'),
-                                  getTimeBoxUI(snapshot.data.scopusConf.toString(), 'Scopus Conference')
+                                  getTimeBoxUI(snapshot.data.scopusJurnal.toString(), 'Jurnal'),
+                                  getTimeBoxUI(snapshot.data.scopusBook.toString(), 'BookChap'),
+                                  getTimeBoxUI(snapshot.data.scopusConf.toString(), 'Conference')
                                 ],
                               ),
                             ),
@@ -289,7 +292,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                       ),
                                       child: Center(
                                         child: Text(
-                                          snapshot.data.scopus3y,
+                                          snapshot.data.sinta3y,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -442,6 +445,7 @@ class DetailUniv{
     this.scopusBook,
     this.scopusConf,
     this.img,
-    this.sinta3y,this.deskripsi,
+    this.sinta3y,
+    this.deskripsi,
   );
 }
