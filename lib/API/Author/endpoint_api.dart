@@ -108,7 +108,7 @@ getAuthorScopus(authorId) async {
 getAuthorGoogle(authorId) async {
   getToken();
   id = authorId;
-  String isi = google;
+  String isi = "google/";
   Map<String, String> headers = {
   "Content-Type" : "application/json",
   "Authorization" : "Bearer "+"$token",
@@ -122,6 +122,7 @@ getAuthorGoogle(authorId) async {
   //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
   //print(hasilData.name);
   final data = jsonDecode(response.body);
+  print(response.body.toString());
   return data;
 }
 

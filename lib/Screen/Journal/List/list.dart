@@ -6,25 +6,32 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 
+enum LoadMoreStatus {LOADING, STABLE}
+
 Client clientListView = Client();
 
-class UnivListView extends StatefulWidget {
-  const UnivListView({Key key, this.callBack}) : super(key: key);
+class JournalListView extends StatefulWidget {
+  const JournalListView({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
-  _UnivListViewState createState() => _UnivListViewState();
+  _JournalListViewState createState() => _JournalListViewState();
 }
 
-class _UnivListViewState extends State<UnivListView>
+class _JournalListViewState extends State<JournalListView>
     with TickerProviderStateMixin {
 
-  Future<List<Univ>> _getUniv() async {
+  ScrollController _scrollController;
+  
+  
+  //int items = 1000;
+  List<Journals> jurnals = [];
+  Future<List<Journals>> _getAuthors() async {
 
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-
-    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/affiliations?items=1000';
+    //print("Items = "+items.toString());
+    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/journals?items=1000';
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
@@ -35,26 +42,44 @@ class _UnivListViewState extends State<UnivListView>
     print(response.statusCode.toString());
     final dataJson = jsonDecode(response.body);
     Cari data = new Cari.fromJson(dataJson);
-    //print(data.affiliations.toString());
+    //print(data.jurnals.toString());
 
     //Authors({this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img = 'assets/design_course/interFace1.png', });
-
-    List<Univ> univs = [];
-    for(var u in data.affiliations){
-      Univ univ = Univ(u["kode_pt"].toString(), u["afiliasi_abbrev"].toString(), u["city"]["name"].toString(), u["afiliasi_abbrev"].toString(), u["rank"].toString(), u["img"].toString());
-      univs.add(univ);
+    
+    
+    for(var u in data.jurnals){
+      Journals jurnal = Journals(u['id'].toString(), 
+                                  u['name'],
+                                  u['institusi'], 
+                                  u['sinta_score'].toString(), 
+                                  u['impact_3'].toString());
+      jurnals.add(jurnal);
     }
-    print(univs.length.toString());
-    return univs;
+    print(jurnals.length.toString());
+    return jurnals;
   }
-  
 
   AnimationController animationController;
+
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
+    _scrollController = new ScrollController(
+      initialScrollOffset: 0.0,
+    );
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
+      //_getAuthors;
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<bool> getData() async {
@@ -67,23 +92,25 @@ class _UnivListViewState extends State<UnivListView>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FutureBuilder(
-        future: _getUniv(),
+        future: this._getAuthors(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //print(snapshot.data.length.toString());
           if (snapshot.data == null) {
             return Align(alignment: Alignment.center,
             child: CircularProgressIndicator(),);
           } else {
-            print(snapshot.data.length.toString());
+            var list = snapshot.data;
+
             return GridView(
-              padding: const EdgeInsets.all(0.25),
+              controller: _scrollController,
+              padding: const EdgeInsets.all(8),
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
                 //Category.popularCourseList.length,
-                snapshot.data.length,
+                list.length,
                 (int index) {
-                  final int count = snapshot.data.length; //Category.popularCourseList.length;
+                  final int count = list.length; //Category.popularCourseList.length;
                   final Animation<double> animation =
                       Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
@@ -96,10 +123,10 @@ class _UnivListViewState extends State<UnivListView>
                   return CategoryView(
                     
                     callback: () {
-                      getUnivNIDN(snapshot.data[index]);
+                      //getAuthorNIDN(snapshot.data[index]);
                       widget.callBack();
                     },
-                    category: snapshot.data[index],
+                    category: list[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -108,7 +135,7 @@ class _UnivListViewState extends State<UnivListView>
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 32.0,
-                crossAxisSpacing: 32.0,
+                crossAxisSpacing: 16.0,
                 childAspectRatio: 0.8,
               ),
             );
@@ -129,7 +156,7 @@ class CategoryView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback callback;
-  final Univ category;
+  final Journals category;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -146,7 +173,7 @@ class CategoryView extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                //getUnivNIDN(category);
+                getAuthorNIDN(category);
                 callback();
               },
               child: SizedBox(
@@ -174,7 +201,7 @@ class CategoryView extends StatelessWidget {
                                         children: <Widget>[
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 16, left: 16, right: 16),
+                                                top: 16, left: 8, right: 8),
                                             child: Text(
                                               category.name,
                                               textAlign: TextAlign.left,
@@ -202,17 +229,18 @@ class CategoryView extends StatelessWidget {
                                               children: <Widget>[
                                                 Flexible(child:
                                                 Text(
-                                                  category.kota,
-                                                  textAlign: TextAlign.center,
+                                                  category.institusi,
+                                                  textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
-                                                    letterSpacing: 0.1,
+                                                    fontSize: 14,
+                                                    letterSpacing: 0.27,
                                                     color: DesignCourseAppTheme
                                                         .grey,
                                                   ),
-                                                )
-                                                )],
+                                                ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
@@ -220,14 +248,14 @@ class CategoryView extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(
-                                    width: 60,
+                                    width: 48,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           const SizedBox(
-                            height: 60,
+                            height: 8,
                           ),
                         ],
                       ),
@@ -240,21 +268,6 @@ class CategoryView extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(16.0)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: DesignCourseAppTheme.grey
-                                      .withOpacity(0.1),
-                                  offset: const Offset(0.0, 0.0),
-                                  blurRadius: 
-                                  10.0),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(4.0)),
-                            child: AspectRatio(
-                                aspectRatio: 0.4,
-                                child: Image.network(category.img)),
                           ),
                         ),
                       ),
@@ -270,33 +283,32 @@ class CategoryView extends StatelessWidget {
   }
 }
 
-class Univ{
+class Journals{
   final name;
+  final id;
+  final institusi;
   final sintaScore;
-  final kota;
-  final website;
-  final img;
-  final kodePT;
-  Univ(this.kodePT, this.name, this.kota, this.website, this.sintaScore, this.img);
+  final impact;
+  Journals(this.id, this.name, this.institusi, this.sintaScore, this.impact);
 
 }
 
 class Cari{
-  final affiliations;
+  final jurnals;
   
-  Cari({this.affiliations,});
+  Cari({this.jurnals,});
 
   factory Cari.fromJson(Map<String, dynamic> parsedJson){
-    return Cari(affiliations: parsedJson['affiliations']);
+    return Cari(jurnals: parsedJson['journals']);
   }
 }
 
-getUnivNIDN(category) async {
+getAuthorNIDN(category) async {
   var pref = await SharedPreferences.getInstance();
   //print(category.nidn);
-  pref.setString("kodePT", category.kodePT);
-  String isi = pref.getString("kodePT");
-  print("Kode PT = " +isi);
+  pref.setString("jurnalID", category.id);
+  String isi = pref.getString("jurnalID");
+  print("Jurnal ID = " +isi);
   //await getAuthorNIDN(isi);
 
 }

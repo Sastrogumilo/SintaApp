@@ -4,9 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:sinta_app/API/Author/author_deserial.dart';
 //import 'dart:async';
 
-Client clientAuthor = Client();
+Client clientJurnal = Client();
 
-final String baseUrl = "http://api.sinta.ristekdikti.go.id/journal/";
+final String baseUrl = "http://api.sinta.ristekdikti.go.id/journal/detail/";
 final String overview = "detail/";
 
 String token;
@@ -57,11 +57,11 @@ getJournalOverview(afiId) async {
   "Authorization" : "Bearer "+"$token",
   //"Content-Type" : "application/json"
   };
-  final response = await clientAuthor.get("$baseUrl"+"$overview"+"$id", headers: headers);
-  print("Response = "+ response.statusCode.toString());
+  final response = await clientJurnal.get("$baseUrl"+"$id", headers: headers);
+  print("Response Jurnal = "+ response.statusCode.toString());
   //print(response.body.toString());
   //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
   //print(hasilData.name);
-  final data = jsonDecode(response.body);
-  return data;
+  final dataJurnal = jsonDecode(response.body);
+  return dataJurnal;
 }

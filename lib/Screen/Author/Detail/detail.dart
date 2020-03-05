@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sinta_app/Screen/Author/List/bimbingan.dart';
+import 'package:sinta_app/Screen/Author/List/book.dart';
+import 'package:sinta_app/Screen/Author/List/google.dart';
+import 'package:sinta_app/Screen/Author/List/ipr.dart';
+import 'package:sinta_app/Screen/Author/List/riset.dart';
+import 'package:sinta_app/Screen/Author/List/scopus.dart';
+import 'package:sinta_app/Screen/Author/List/service.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:sinta_app/design_course/design_course_app_theme.dart';
 import 'package:sinta_app/API/Author/endpoint_api.dart';
@@ -71,15 +78,16 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
   Widget build(BuildContext context) {
     final double tempHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).size.width / 1.2) +
-        24.0;
+        128.0;
     return Container(
       child: FutureBuilder(
         future: _getAuthorData(),
         builder: (BuildContext context, AsyncSnapshot snapshot){
            if(snapshot.data == null){
                 return Container(
-                  child: Center(
-                    child: Text("Loading"),
+                  child: Align(alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                    
                     
                   ),
                 );
@@ -140,7 +148,7 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 32.0, left: 18, right: 16),
+                                top: 8.0, left: 18, right: 16),
                             child: 
                            
                             Text( 
@@ -262,25 +270,41 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Container(
-                                    width: 48,
-                                    height: 48,
+                                  Expanded(
                                     child: Container(
+                                      height: 48,
                                       decoration: BoxDecoration(
-                                        color: DesignCourseAppTheme.nearlyWhite,
+                                        color: DesignCourseAppTheme.nearlyBlue,
                                         borderRadius: const BorderRadius.all(
                                           Radius.circular(16.0),
                                         ),
-                                        border: Border.all(
-                                            color: DesignCourseAppTheme.grey
-                                                .withOpacity(0.2)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
                                       ),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: DesignCourseAppTheme.nearlyBlue,
-                                        size: 28,
+                                      child: FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => BimbinganPage())), 
+                                      child: 
+                                      Center(
+                                        child: Text(
+                                          //snapshot.data.scopuscitat,
+                                          "Bimbingan",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    )),
                                   ),
                                   const SizedBox(
                                     width: 16,
@@ -302,13 +326,79 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                               blurRadius: 10.0),
                                         ],
                                       ),
-                                      child: Center(
+                                      child: FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => RisetPage())), 
+                                      child: 
+                                      Center(
                                         child: Text(
-                                          snapshot.data.scopuscitat,
+                                          //snapshot.data.scopuscitat,
+                                          "Riset",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 18,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                                  ),
+                                  /*
+                                  Container(
+                                    width: 48,
+                                    height: 48,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyWhite,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        border: Border.all(
+                                            color: DesignCourseAppTheme.grey
+                                                .withOpacity(0.2)),
+                                      ),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        size: 28,
+                                      ),
+                                    ),
+                                  ),
+                                  */
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
+                                      ),
+                                      child: 
+                                      FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ServicePage())), 
+                                      child:
+                                      Center(
+                                        child: Text(
+                                          //snapshot.data.scopuscitat,
+                                          "Pengabdian",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
                                             letterSpacing: 0.0,
                                             color: DesignCourseAppTheme
                                                 .nearlyWhite,
@@ -317,7 +407,189 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                       ),
                                     ),
                                   )
-                                ],
+                                  )],
+                              ),
+                            ),
+                          ),
+                          ///////////////////////////////////////////////////////////////////////////
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 500),
+                            opacity: opacity3,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, bottom: 16, right: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
+                                      ),
+                                      child: FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => IprPage())), 
+                                      child: 
+                                      Center(
+                                        child: Text(
+                                          //snapshot.data.scopuscitat,
+                                          "IPR",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
+                                      ),
+                                      child: 
+                                      FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => BookPage())), 
+                                      child:
+                                      Center(
+                                        child: Text(
+                                          //snapshot.data.scopuscitat,
+                                          "Book",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  )],
+                              ),
+                            ),
+                          ),
+                          /////////////////////////////////////////////////////////////////////////////////
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 500),
+                            opacity: opacity3,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, bottom: 16, right: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
+                                      ),
+                                      child: FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ScopusPage())), 
+                                      child: 
+                                      Center(
+                                        child: Text(
+                                          //snapshot.data.scopuscitat,
+                                          "Scopus",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
+                                      ),
+                                      child: 
+                                      FlatButton(onPressed: () =>
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GoogleSchoolarPage())), 
+                                      child:
+                                      Center(
+                                        child: Text(
+                                          //snapshot.data.scopuscitat,
+                                          "Google",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  )],
                               ),
                             ),
                           ),

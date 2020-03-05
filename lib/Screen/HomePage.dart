@@ -1,17 +1,12 @@
-//import 'package:sinta_app/Constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sinta_app/Models/tabicon_data.dart';
 import 'package:sinta_app/Screen/Search/index.dart' as SearchScreen;
 import 'package:sinta_app/Screen/Author/index.dart' as AuthorScreen;
 import 'package:sinta_app/Screen/Affiliation/index.dart' as AffiScreen;
-//import 'package:sinta_app/design_course/category_list_view.dart';
-//import 'package:sinta_app/design_course/course_info_screen.dart';
-//import 'package:sinta_app/design_course/popular_course_list_view.dart';
-//import 'package:sinta_app/initialization.dart';
-//import 'package:sinta_app/main.dart';
 import 'package:sinta_app/theme/design_theme.dart';
 import 'package:sinta_app/Screen/Layout/bottom_navigation.dart';
+import 'package:sinta_app/Screen/Journal/index.dart' as JournalScreen;
 
 class HomeScreen extends StatefulWidget {
   static String tag = 'author-page';
@@ -94,24 +89,34 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       SearchScreen.ScreenLayout(animationController: animationController);
                 });
               });
-            } else if (index == 2 ) {
+            } else if (index == 1) {
               animationController.reverse().then<dynamic>((data) {
                 if (!mounted) {
                   return;
                 }
                 setState(() {
                   tabBody =
-                      AffiScreen.ScreenLayoutAffiliation(animationController: animationController);
+                      AuthorScreen.ScreenLayoutAuthor(animationController: animationController);
                 });
               });
-            }else if (index == 1 || index == 3) {
+            }else if (index == 2) {
               animationController.reverse().then<dynamic>((data) {
                 if (!mounted) {
                   return;
                 }
                 setState(() {
                   tabBody =
-                      AuthorScreen.ScreenLayoutAuthor(animationController: animationController,);
+                      AffiScreen.ScreenLayoutAffiliation(animationController: animationController,);
+                });
+              });
+            } else if (index == 3 ) {
+              animationController.reverse().then<dynamic>((data) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {
+                  tabBody =
+                      JournalScreen.ScreenLayoutJournal(animationController: animationController);
                 });
               });
             }

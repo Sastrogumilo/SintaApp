@@ -63,7 +63,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
     
     listViews.add(
       AseanBenchmark.WidgetThemes(
-        titleTxt: 'Mediterranean diet',
+        titleTxt: 'Test',
         subTxt: 'Details',
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
@@ -76,7 +76,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
 
     listViews.add(
       AuthorBenchmark.WidgetThemes(
-        titleTxt: 'Mediterranean diet',
+        titleTxt: 'Test2',
         subTxt: 'Details',
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
@@ -385,7 +385,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
-    print('GETDATA RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN');
+    //print('GETDATA RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN');
     return true;
   }
   
@@ -394,11 +394,11 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
       future: getData(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (!snapshot.hasData) {
-          print("TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTTTTTTTTTTTTTTTTTTTT");
+          //print("TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTTTTTTTTTTTTTTTTTTTT");
           print(snapshot);
           return const SizedBox();
         } else {
-          print("BUILDERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+          //print("BUILDERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
           return ListView.builder(
             controller: scrollController,
             padding: EdgeInsets.only(
