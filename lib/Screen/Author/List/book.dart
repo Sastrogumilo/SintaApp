@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/API/Author/endpoint_api.dart';
-import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:http/http.dart' show Client;
 
+Client clientBook = Client();
 
 class BookPage extends StatefulWidget {
   
@@ -12,7 +12,6 @@ class BookPage extends StatefulWidget {
   _BookPageState createState() => new _BookPageState();
 
 }
-List<UserBook> books = [];
 
 class _BookPageState extends State<BookPage>{
 
@@ -33,7 +32,7 @@ class _BookPageState extends State<BookPage>{
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await client.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+    final response = await clientBook.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
     final dataJson = jsonDecode(response.body);
     Book hasil = new Book.fromJson(dataJson);
     //var jsonData = hasil.result; //Data Hasil Olahan
@@ -41,10 +40,11 @@ class _BookPageState extends State<BookPage>{
     print(response.body.toString());
     
     //List<UserBimbingan> bimbingan = [];
+    List<UserBook> books = [];
 
     for(var u in hasil.result){
-      UserBook book = UserBook(u['title'], 
-                                  u['ISBN'], 
+      UserBook book = UserBook(u['title'].toString(), 
+                                  u['ISBN'].toString(), 
                                   u['author_name'].toString(), 
                                   u['tempat'].toString(), 
                                   u['penerbit'].toString(), 
@@ -76,16 +76,15 @@ class _BookPageState extends State<BookPage>{
                   
                 case ConnectionState.done:
               //print(snapshot.data);
-              if(snapshot.data == null){
+              if(snapshot.data.length == 0){
                 return Container(
                   child: Center(
                     child: Text("Author Belum Pernah Menerbitkan Buku", textAlign: TextAlign.center,)));
               } else if (snapshot.hasError){
                   return Container(
                   child: Center(
-                    child: Text('Error: ${snapshot.error}')));
-              } else {
-              return ListView.builder(
+                    child: Text('Error: ${snapshot.error}')));} 
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -107,10 +106,9 @@ class _BookPageState extends State<BookPage>{
                        },
                       );
                     },
-                );
+                  );
               }
-            }
-            }),
+             ),
         ),
       );
   }

@@ -54,7 +54,7 @@ class WidgetThemes extends StatelessWidget {
         ),
       );
     }
-
+/*
     void moveTo() {
       Navigator.push<dynamic>(
         context,
@@ -63,7 +63,7 @@ class WidgetThemes extends StatelessWidget {
         ),
       );
     }
-    
+*/    
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {

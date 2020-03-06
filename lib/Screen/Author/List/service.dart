@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:http/http.dart' show Client;
 
+Client clientService = Client();
 
 class ServicePage extends StatefulWidget {
   
@@ -11,7 +12,7 @@ class ServicePage extends StatefulWidget {
   _ServicePageState createState() => new _ServicePageState();
 
 }
-List<UserRiset> risets = [];
+
 
 class _ServicePageState extends State<ServicePage>{
 
@@ -31,25 +32,27 @@ class _ServicePageState extends State<ServicePage>{
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
-
-    final response = await client.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
-    final dataJson = jsonDecode(response.body);
-    Riset hasil = new Riset.fromJson(dataJson);
+    //print("$baseUrl"+"$input"+"$jumlah");
+    final response = await clientService.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+   
+    var dataJson = jsonDecode(response.body);
+    Service hasilService = new Service.fromJson(dataJson);
+    
     //var jsonData = hasil.result; //Data Hasil Olahan
     //print(hasil.result);
     //print(hasil.author);
     
     //List<UserBimbingan> bimbingan = [];
-
-    for(var u in hasil.result){
-      UserRiset riset = UserRiset(u['judul'], 
-                                  u['nama_ketua'], 
+    List<UserRiset> risets = [];
+    for(var u in hasilService.resultService){
+      UserRiset riset = UserRiset(u['judul'].toString(), 
+                                  u['nama_ketua'].toString(), 
                                   u['thn_usulan_kegiatan'].toString(), 
                                   u['thn_pelaksanaan_kegiatan'].toString(), 
                                   u['dana_disetujui'].toString(), 
-                                  u['bidang_fokus'],
-                                  u['program_hibah'],
-                                  u['nama_singkat_skema'],
+                                  u['bidang_fokus'].toString(),
+                                  u['program_hibah'].toString(),
+                                  u['nama_singkat_skema'].toString(),
                                 );
       risets.add(riset);
     }
@@ -77,16 +80,15 @@ class _ServicePageState extends State<ServicePage>{
                   
                 case ConnectionState.done:
               //print(snapshot.data);
-              if(snapshot.data == null){
+              if(snapshot.data.length == 0){
                 return Container(
                   child: Center(
                     child: Text("Author Belum Pernah Melakukan Pengabdian Masyarakat", textAlign: TextAlign.center,)));
               } else if (snapshot.hasError){
                   return Container(
                   child: Center(
-                    child: Text('Error: ${snapshot.error}')));
-              } else {
-              return ListView.builder(
+                    child: Text('Error: ${snapshot.error}')));}
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -109,8 +111,6 @@ class _ServicePageState extends State<ServicePage>{
                       );
                     },
                 );
-              }
-            }
             }),
         ),
       );
@@ -169,16 +169,16 @@ class UserRiset {
 }
 
 
-class Riset{
-  final result;
+class Service{
+  final resultService;
   
-  Riset({
-    this.result, 
+  Service({
+    this.resultService, 
 
   });
 
-  factory Riset.fromJson(Map<String, dynamic> parsedJson){
-   return Riset(result: parsedJson['author']['services']['article'],
+  factory Service.fromJson(Map<String, dynamic> parsedJsonService){
+   return Service(resultService: parsedJsonService['author']['services']['article'],
                       //author: listAuthor,
                   );
   }

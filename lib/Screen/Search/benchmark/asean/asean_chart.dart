@@ -8,7 +8,7 @@ class StackedAreaLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   final String title;
-
+  
   StackedAreaLineChart(this.seriesList, this.title, {this.animate});
 
   @override

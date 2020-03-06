@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' show Client;
 
-Client client = Client();
+Client clientIpr = Client();
 
 class IprPage extends StatefulWidget {
   
@@ -13,11 +12,11 @@ class IprPage extends StatefulWidget {
   _IprPageState createState() => new _IprPageState();
 
 }
-List<UserRiset> risets = [];
+
 
 class _IprPageState extends State<IprPage>{
 
-  Future<List<UserRiset>> _getUsers() async {
+  Future<List<UserRiset>> _getIpr() async {
     
     final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/ipr/";
     final String jumlah = "?items=1000";
@@ -34,29 +33,28 @@ class _IprPageState extends State<IprPage>{
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await client.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+    final response = await clientIpr.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
     final dataJson = jsonDecode(response.body);
     Riset hasil = new Riset.fromJson(dataJson);
     //var jsonData = hasil.result; //Data Hasil Olahan
     print(response.body.toString());
     //print(hasil.author);
     
-    //List<UserBimbingan> bimbingan = [];
-
+    List<UserRiset> iprs = [];
     for(var u in hasil.result){
-      UserRiset riset = UserRiset(u['title'], 
-                                  u['kategori'], 
+      UserRiset riset = UserRiset(u['title'].toString(), 
+                                  u['kategori'].toString(), 
                                   u['tahun_permohonan'].toString(), 
                                   u['pemegang_paten'].toString(), 
                                   u['inventor'].toString(), 
                                   u['status'].toString(),
                                   u['tgl_publikasi'].toString(),
                                 );
-      risets.add(riset);
+      iprs.add(riset);
     }
     //print(users);
     //print(users.length);
-    return risets; 
+    return iprs;
   }
   
   @override
@@ -67,7 +65,7 @@ class _IprPageState extends State<IprPage>{
         leading: new IconButton(icon: new Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context))),
         body: Container(
           child: FutureBuilder(
-            future: _getUsers(),
+            future: _getIpr(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               switch(snapshot.connectionState){
                 case ConnectionState.none:
@@ -78,7 +76,7 @@ class _IprPageState extends State<IprPage>{
                   
                 case ConnectionState.done:
               //print(snapshot.data);
-              if(snapshot.data == null){
+              if(snapshot.data.length == 0 || snapshot.data == null){
                 return Container(
                   child: Center(
                     child: Text("Author Belum Pernah Mengajukan IPR", textAlign: TextAlign.center,)));
@@ -86,8 +84,8 @@ class _IprPageState extends State<IprPage>{
                   return Container(
                   child: Center(
                     child: Text('Error: ${snapshot.error}')));
-              } else {
-              return ListView.builder(
+               }
+              }return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -110,8 +108,6 @@ class _IprPageState extends State<IprPage>{
                       );
                     },
                 );
-              }
-            }
             }),
         ),
       );

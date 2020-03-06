@@ -2,28 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
-Client clientBimbingan = Client();
 
-class BimbinganPage extends StatefulWidget {
+//Client client = Client();
+
+class UnivGooglePage extends StatefulWidget {
   
   @override 
-  _BimbinganPageState createState() => new _BimbinganPageState();
+  _UnivGooglePageState createState() => new _UnivGooglePageState();
 
 }
 
-class _BimbinganPageState extends State<BimbinganPage>{
+class _UnivGooglePageState extends State<UnivGooglePage>{
 
-  Future<List<UserBimbingan>> _getBimbingan() async {
-    
-    final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/bimbingan/";
+  Future<List<UserGoogle>> _getGoogle() async {
+    //getToken();
+    final String baseUrl = "http://api.sinta.ristekdikti.go.id/affiliation/detail/google/";
     final String jumlah = "?items=1000";
     
     final pref = await SharedPreferences.getInstance();
-    String input = pref.getString('nidn');
+    String input = pref.getString('kodePT');
     //String input = "54481";
-    //print(input);
+    print("INPUT = $input");
     String token = pref.getString("token");
     //print("Token saat INI "+"$token");
 
@@ -31,38 +32,42 @@ class _BimbinganPageState extends State<BimbinganPage>{
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
-    
-    print("$baseUrl"+"$input"+"$jumlah");
-    final response = await clientBimbingan.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
-    //print(response.body.toString());
-    final dataJson = json.decode(response.body);
-    Bimbingan hasilBimbingan = new Bimbingan.fromJson(dataJson);
+    print("$baseUrl"+"$input");
+    var clientGoogle = http.Client();
+    final response = await clientGoogle.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+
+    final dataJson = jsonDecode(response.body);
+    Riset hasil = new Riset.fromJson(dataJson);
     //var jsonData = hasil.result; //Data Hasil Olahan
     //print(hasil.result);
-    //print(hasil.author);
+    print(response.body.toString());
     
     //List<UserBimbingan> bimbingan = [];
-    List<UserBimbingan> bimbingans = [];
-    for(var u in hasilBimbingan.resultBimbingan){
-      UserBimbingan bimbingan = UserBimbingan(u['dc_title'].toString(), 
-                                              u['dc_subject'].toString(), 
-                                              u['dc_description'].toString(),
-                                              );
-      bimbingans.add(bimbingan);
+    List<UserGoogle> univGoogles = [];
+    for(var u in hasil.resultGoogle){
+      UserGoogle google = UserGoogle(u['title'].toString(), 
+                                  u['authors'].toString(), 
+                                  u['jurnal_name'].toString(), 
+                                  u['year'].toString(), 
+                                  u['citation'].toString(), 
+                                  u['akreditasi'].toString(),
+                                );
+      univGoogles.add(google);
     }
     //print(users);
     //print(users.length);
-    return bimbingans; 
+    return univGoogles;
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('Daftar Artikel Bimbingan'),
+        title: new Text('Daftar Google Schoolar Author'),
         leading: new IconButton(icon: new Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context))),
         body: Container(
           child: FutureBuilder(
-            future: _getBimbingan(),
+            future: _getGoogle(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               switch(snapshot.connectionState){
                 case ConnectionState.none:
@@ -72,17 +77,17 @@ class _BimbinganPageState extends State<BimbinganPage>{
                   child: CircularProgressIndicator());
                   
                 case ConnectionState.done:
-                
-              //print(snapshot.data.toString());
-              if(snapshot.data.length == 0){
-                return SizedBox(
+              //print(snapshot.data);
+              if(snapshot.data == null || snapshot.data.length == 0){
+                return Container(
                   child: Center(
-                    child: Text("Author Belum Pernah Membimbing")));
+                    child: Text("Tidak Ada Data", textAlign: TextAlign.center,)));
               } else if (snapshot.hasError){
                   return Container(
                   child: Center(
-                    child: Text('Error: ${snapshot.error}')));}
-              }return ListView.builder(
+                    child: Text('Error: ${snapshot.error}')));
+                } 
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -94,7 +99,8 @@ class _BimbinganPageState extends State<BimbinganPage>{
                        ),
                       ),
                        title: Text(snapshot.data[index].judul),
-                       subtitle: Text(snapshot.data[index].subject),
+                       subtitle: Text(snapshot.data[index].year),
+                       isThreeLine: true,
                        onTap: (){
                          //idTap(snapshot.data[index]);
                          Navigator.push(context, 
@@ -104,15 +110,14 @@ class _BimbinganPageState extends State<BimbinganPage>{
                       );
                     },
                 );
-              } 
-            ),
+            }),
         ),
       );
   }
 }
 
 class DetailPage extends StatelessWidget{
-  final UserBimbingan user;
+  final UserGoogle user;
 
   DetailPage(this.user);
   
@@ -131,35 +136,54 @@ class DetailPage extends StatelessWidget{
         title: Text(user.judul),
       ),
       body: Container(
-        child: Text(user.deskripsi),
+        child: Column(
+         //crossAxisAlignment: CrossAxisAlignment.baseline,
+          children: <Widget>[
+        Text("Judul = " + user.judul),
+        Text("Quartile = "+user.authors),
+        Text("Nama Publikator = "+user.jurnalName),
+        Text("Pembuat = "+user.year),
+        Text("ISSN = "+user.citation),
+        Text("Tanggal Terbit = "+user.akreditasi),
+
+        ],),
       ),
     );
   }
+
 }
 
-class UserBimbingan {
+class UserGoogle {
   final judul;
-  final subject;
-  final deskripsi;
+  final authors;
+  final jurnalName;
+  final year;
+  final citation;
+  final akreditasi;
 
-  UserBimbingan(this.judul, this.subject, this.deskripsi, );
+
+
+  UserGoogle(this.judul, 
+            this.authors, 
+            this.jurnalName, 
+            this.year, 
+            this.citation, 
+            this.akreditasi, 
+            //this.tanggalPublikasi,
+            );
 }
 
 
-class Bimbingan{
-  final resultBimbingan;
-  //final List<Authors>author;
+class Riset{
+  final resultGoogle;
   
-  Bimbingan({
-    this.resultBimbingan, 
-    //this.author
+  Riset({
+    this.resultGoogle, 
+
   });
 
-  factory Bimbingan.fromJson(Map<String, dynamic> parsedJson){
-
-    return Bimbingan(resultBimbingan: parsedJson['author']['bimbingan']['article'],
-                      //author: listAuthor,
-                    );
+  factory Riset.fromJson(Map<String, dynamic> parsedJson){
+   return Riset(resultGoogle: parsedJson['afiliasi']['g_scholar']['article'],);
   }
 }
 

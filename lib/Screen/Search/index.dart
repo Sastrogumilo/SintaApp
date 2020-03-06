@@ -23,9 +23,11 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
   CategoryType categoryType = CategoryType.ui;
+
   
   @override
   void initState(){
+    
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController,
@@ -55,6 +57,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
       }
     });
     //getToken();
+    //fetchAsean();
     super.initState();
   }
 
@@ -63,7 +66,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
     
     listViews.add(
       AseanBenchmark.WidgetThemes(
-        titleTxt: 'Test',
+        titleTxt: 'ASEAN TEST',
         subTxt: 'Details',
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
@@ -427,3 +430,5 @@ enum CategoryType {
   coding,
   basic,
 }
+
+

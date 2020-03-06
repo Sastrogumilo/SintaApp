@@ -13,14 +13,13 @@ class GoogleSchoolarPage extends StatefulWidget {
   _GoogleSchoolarPageState createState() => new _GoogleSchoolarPageState();
 
 }
-List<UserRiset> risets = [];
 
 class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
 
-  Future<List<UserRiset>> _getUsers() async {
+  Future<List<UserGoogle>> _getGoogle() async {
     //getToken();
     final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/google/";
-    //final String jumlah = "?items=1000";
+    final String jumlah = "?items=1000";
     
     final pref = await SharedPreferences.getInstance();
     String input = pref.getString('nidn');
@@ -33,8 +32,9 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
-    var client = http.Client();
-    final response = await client.get("$baseUrl"+"$input", headers: headers);
+    print("$baseUrl"+"$input");
+    var clientGoogle = http.Client();
+    final response = await clientGoogle.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
 
     final dataJson = jsonDecode(response.body);
     Riset hasil = new Riset.fromJson(dataJson);
@@ -43,20 +43,20 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
     print(response.body.toString());
     
     //List<UserBimbingan> bimbingan = [];
-
-    for(var u in hasil.result){
-      UserRiset riset = UserRiset(u['title'], 
-                                  u['authors'], 
+    List<UserGoogle> googles = [];
+    for(var u in hasil.resultGoogle){
+      UserGoogle google = UserGoogle(u['title'].toString(), 
+                                  u['authors'].toString(), 
                                   u['jurnal_name'].toString(), 
                                   u['year'].toString(), 
                                   u['citation'].toString(), 
                                   u['akreditasi'].toString(),
                                 );
-      risets.add(riset);
+      googles.add(google);
     }
     //print(users);
     //print(users.length);
-    return risets; 
+    return googles;
   }
   
   @override
@@ -67,7 +67,7 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
         leading: new IconButton(icon: new Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context))),
         body: Container(
           child: FutureBuilder(
-            future: _getUsers(),
+            future: _getGoogle(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               switch(snapshot.connectionState){
                 case ConnectionState.none:
@@ -78,7 +78,7 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
                   
                 case ConnectionState.done:
               //print(snapshot.data);
-              if(snapshot.data == null){
+              if(snapshot.data.length == 0){
                 return Container(
                   child: Center(
                     child: Text("Tidak Ada Data", textAlign: TextAlign.center,)));
@@ -86,8 +86,8 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
                   return Container(
                   child: Center(
                     child: Text('Error: ${snapshot.error}')));
-              } else {
-              return ListView.builder(
+                } 
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -99,7 +99,7 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
                        ),
                       ),
                        title: Text(snapshot.data[index].judul),
-                       subtitle: Text(snapshot.data[index].coverDisplayDate),
+                       subtitle: Text(snapshot.data[index].year),
                        isThreeLine: true,
                        onTap: (){
                          //idTap(snapshot.data[index]);
@@ -110,8 +110,6 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
                       );
                     },
                 );
-              }
-            }
             }),
         ),
       );
@@ -119,7 +117,7 @@ class _GoogleSchoolarPageState extends State<GoogleSchoolarPage>{
 }
 
 class DetailPage extends StatelessWidget{
-  final UserRiset user;
+  final UserGoogle user;
 
   DetailPage(this.user);
   
@@ -155,7 +153,7 @@ class DetailPage extends StatelessWidget{
 
 }
 
-class UserRiset {
+class UserGoogle {
   final judul;
   final authors;
   final jurnalName;
@@ -165,7 +163,7 @@ class UserRiset {
 
 
 
-  UserRiset(this.judul, 
+  UserGoogle(this.judul, 
             this.authors, 
             this.jurnalName, 
             this.year, 
@@ -177,17 +175,15 @@ class UserRiset {
 
 
 class Riset{
-  final result;
+  final resultGoogle;
   
   Riset({
-    this.result, 
+    this.resultGoogle, 
 
   });
 
   factory Riset.fromJson(Map<String, dynamic> parsedJson){
-   return Riset(result: parsedJson['author']['g_scholar']['article'],
-                      //author: listAuthor,
-                  );
+   return Riset(resultGoogle: parsedJson['author']['g_scholar']['article'],);
   }
 }
 

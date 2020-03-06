@@ -24,7 +24,7 @@ class _UnivListViewState extends State<UnivListView>
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
 
-    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/affiliations?items=1000';
+    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/affiliations?items=4000';
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
@@ -41,7 +41,7 @@ class _UnivListViewState extends State<UnivListView>
 
     List<Univ> univs = [];
     for(var u in data.affiliations){
-      Univ univ = Univ(u["kode_pt"].toString(), u["afiliasi_abbrev"].toString(), u["city"]["name"].toString(), u["afiliasi_abbrev"].toString(), u["rank"].toString(), u["img"].toString());
+      Univ univ = Univ(u['id'], u["kode_pt"].toString(), u["afiliasi_abbrev"].toString(), u["city"]["name"].toString(), u["afiliasi_abbrev"].toString(), u["rank"].toString(), u["img"].toString());
       univs.add(univ);
     }
     print(univs.length.toString());
@@ -272,12 +272,13 @@ class CategoryView extends StatelessWidget {
 
 class Univ{
   final name;
+  final idPT;
   final sintaScore;
   final kota;
   final website;
   final img;
   final kodePT;
-  Univ(this.kodePT, this.name, this.kota, this.website, this.sintaScore, this.img);
+  Univ(this.idPT, this.kodePT, this.name, this.kota, this.website, this.sintaScore, this.img);
 
 }
 
@@ -293,8 +294,8 @@ class Cari{
 
 getUnivNIDN(category) async {
   var pref = await SharedPreferences.getInstance();
-  //print(category.nidn);
-  pref.setString("kodePT", category.kodePT);
+  //print(category.idPT);
+  pref.setString("kodePT", category.idPT);
   String isi = pref.getString("kodePT");
   print("Kode PT = " +isi);
   //await getAuthorNIDN(isi);

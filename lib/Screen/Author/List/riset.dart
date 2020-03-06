@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/API/Search/search.dart';
+//import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:http/http.dart' show Client;
 
+Client clientRiset = Client();
 
 class RisetPage extends StatefulWidget {
   
@@ -11,11 +13,11 @@ class RisetPage extends StatefulWidget {
   _RisetPageState createState() => new _RisetPageState();
 
 }
-List<UserRiset> risets = [];
+
 
 class _RisetPageState extends State<RisetPage>{
 
-  Future<List<UserRiset>> _getUsers() async {
+  Future<List<UserRiset>> _getRiset() async {
     
     final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/research/";
     final String jumlah = "?items=1000";
@@ -31,25 +33,24 @@ class _RisetPageState extends State<RisetPage>{
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
-
-    final response = await client.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
-    
-    client.close();
+    print("$baseUrl"+"$input"+"$jumlah");
+    final response = await clientRiset.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+    //clientRiset.close();
     final dataJson = jsonDecode(response.body);
     Riset hasil = new Riset.fromJson(dataJson);
     //var jsonData = hasil.result; //Data Hasil Olahan
     //print(hasil.result);
     //print(hasil.author);
     
-    //List<UserBimbingan> bimbingan = [];
-
+   
+    List<UserRiset> risets = [];
     for(var u in hasil.result){
-      UserRiset riset = UserRiset(u['judul'], 
-                                  u['nama_ketua'], 
+      UserRiset riset = UserRiset(u['judul'].toString(), 
+                                  u['nama_ketua'].toString(), 
                                   u['thn_usulan_kegiatan'].toString(), 
                                   u['thn_pelaksanaan_kegiatan'].toString(), 
                                   u['dana_disetujui'].toString(), 
-                                  u['bidang_fokus']
+                                  u['bidang_fokus'].toString(),
                                 );
       risets.add(riset);
     }
@@ -66,7 +67,7 @@ class _RisetPageState extends State<RisetPage>{
         leading: new IconButton(icon: new Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context))),
         body: Container(
           child: FutureBuilder(
-            future: _getUsers(),
+            future: _getRiset(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               switch(snapshot.connectionState){
                 case ConnectionState.none:
@@ -77,16 +78,16 @@ class _RisetPageState extends State<RisetPage>{
                   
                 case ConnectionState.done:
               //print(snapshot.data);
-              if(snapshot.data == null){
+              if(snapshot.data.length == 0 || snapshot.data.length == null ){
                 return Container(
                   child: Center(
                     child: Text("Author Belum Pernah Melakukan Riset")));
               } else if (snapshot.hasError){
                   return Container(
                   child: Center(
-                    child: Text('Error: ${snapshot.error}')));
-              } else {
-              return ListView.builder(
+                    child: Text('Error: ${snapshot.error}')));}
+          
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -109,8 +110,6 @@ class _RisetPageState extends State<RisetPage>{
                       );
                     },
                 );
-              }
-            }
             }),
         ),
       );

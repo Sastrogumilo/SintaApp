@@ -24,36 +24,36 @@ class _HasilSearchAuthorState extends State<HasilSearchAuthor>
 
   ScrollController _scrollController;
   
-  
-  int items = 1000;
-  List<Authors> authors = [];
 
-  Future<List<Authors>> _getAuthors(int items) async {
+  Future<List<Authors>> _getAuthors() async {
 
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
     String nama = pref.getString('nama');
     print(nama.toString());
-    print("Items = "+items.toString());
+    //print("Items = "+items.toString());
     final String baseUrl = 'http://api.sinta.ristekdikti.go.id/authors?q=';
-    final String jumlah = "&items=";
+    final String jumlah = "&items=1000";
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await clientListView.get("$baseUrl"+'$nama'+'$jumlah'+'$items', headers: headers);
-    print(response.statusCode.toString());
+    final response = await clientListView.get("$baseUrl"+'$nama'+'$jumlah', headers: headers);
+    //print(response.statusCode.toString());
     final dataJson = jsonDecode(response.body);
     Cari data = new Cari.fromJson(dataJson);
     //print(data.authors.toString());
 
     //Authors({this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img = 'assets/design_course/interFace1.png', });
-    
+    List<Authors> authors = [];
     
     for(var u in data.authors){
-      Authors author = Authors(u['nidn'].toString(), u['fullname'].toString(), u['affiliation']['name'].toString(), "assets/design_course/interFace1.png");
+      Authors author = Authors(u['nidn'].toString(), 
+                                u['id'], u['fullname'].toString(), 
+                                u['affiliation']['name'].toString(), 
+                                "assets/design_course/interFace1.png");
       authors.add(author);
     }
     print(authors.length.toString());
@@ -71,7 +71,6 @@ class _HasilSearchAuthorState extends State<HasilSearchAuthor>
     );
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-      _getAuthors(items = items + 10);
       }
     });
     super.initState();
@@ -94,7 +93,7 @@ class _HasilSearchAuthorState extends State<HasilSearchAuthor>
     Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FutureBuilder(
-        future: this._getAuthors(items),
+        future: this._getAuthors(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //print(snapshot.data.length.toString());
           if (snapshot.data == null) {
@@ -302,11 +301,11 @@ class CategoryView extends StatelessWidget {
 
 class Authors{
   final name;
-  
+  final authorId;
   final googleHindex;
   final img;
   final nidn;
-  Authors(this.nidn, this.name, this.googleHindex, this.img);
+  Authors(this.nidn, this.authorId, this.name, this.googleHindex, this.img);
 
 }
 
@@ -323,7 +322,7 @@ class Cari{
 getAuthorNIDN(category) async {
   var pref = await SharedPreferences.getInstance();
   //print(category.nidn);
-  pref.setString("nidn", category.nidn);
+  pref.setString("nidn", category.authorId);
   String isi = pref.getString("nidn");
   print("NIDN = " +isi);
   //await getAuthorNIDN(isi);

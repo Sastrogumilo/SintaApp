@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sinta_app/API/Search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:http/http.dart' show Client;
+
+Client clientScopus = Client();
 
 
 class ScopusPage extends StatefulWidget {
@@ -11,7 +13,7 @@ class ScopusPage extends StatefulWidget {
   _ScopusPageState createState() => new _ScopusPageState();
 
 }
-List<UserRiset> risets = [];
+
 
 class _ScopusPageState extends State<ScopusPage>{
 
@@ -32,7 +34,7 @@ class _ScopusPageState extends State<ScopusPage>{
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await client.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+    final response = await clientScopus.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
     final dataJson = jsonDecode(response.body);
     Riset hasil = new Riset.fromJson(dataJson);
     //var jsonData = hasil.result; //Data Hasil Olahan
@@ -40,10 +42,10 @@ class _ScopusPageState extends State<ScopusPage>{
     //print(hasil.author);
     
     //List<UserBimbingan> bimbingan = [];
-
+    List<UserRiset> risets = [];
     for(var u in hasil.result){
-      UserRiset riset = UserRiset(u['title'], 
-                                  u['quartile'], 
+      UserRiset riset = UserRiset(u['title'].toString(), 
+                                  u['quartile'].toString(), 
                                   u['publicationName'].toString(), 
                                   u['creator'].toString(), 
                                   u['issn'].toString(), 
@@ -79,16 +81,15 @@ class _ScopusPageState extends State<ScopusPage>{
                   
                 case ConnectionState.done:
               //print(snapshot.data);
-              if(snapshot.data == null){
+              if(snapshot.data.length == 0){
                 return Container(
                   child: Center(
                     child: Text("Tidak Ada Data", textAlign: TextAlign.center,)));
               } else if (snapshot.hasError){
                   return Container(
                   child: Center(
-                    child: Text('Error: ${snapshot.error}')));
-              } else {
-              return ListView.builder(
+                    child: Text('Error: ${snapshot.error}')));}
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -111,8 +112,6 @@ class _ScopusPageState extends State<ScopusPage>{
                       );
                     },
                 );
-              }
-            }
             }),
         ),
       );

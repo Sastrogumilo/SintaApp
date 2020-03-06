@@ -4,6 +4,9 @@ import 'package:sinta_app/design_course/design_course_app_theme.dart';
 import 'package:sinta_app/API/Afiliation/endpoint_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sinta_app/API/Afiliation/Overview/data.dart';
+import 'package:sinta_app/Screen/Affiliation/List/google.dart';
+import 'package:sinta_app/Screen/Affiliation/List/scopus.dart';
+
 
 class UnivInfoScreen extends StatefulWidget {
   @override
@@ -71,7 +74,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
   Widget build(BuildContext context) {
     final double tempHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).size.width / 1.2) +
-        24.0;
+        128.0;
     return Container(
       child: FutureBuilder(
         future: _getUnivData(),
@@ -250,29 +253,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: DesignCourseAppTheme.nearlyWhite,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16.0),
-                                        ),
-                                        border: Border.all(
-                                            color: DesignCourseAppTheme.grey
-                                                .withOpacity(0.2)),
-                                      ),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: DesignCourseAppTheme.nearlyBlue,
-                                        size: 28,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
+                                  
                                   Expanded(
                                     child: Container(
                                       height: 48,
@@ -290,9 +271,52 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                               blurRadius: 10.0),
                                         ],
                                       ),
-                                      child: Center(
+                                      child: FlatButton(
+                                        onPressed: () =>
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => UnivScopusPage())),
+                                        child:Container(
                                         child: Text(
-                                          snapshot.data.sinta3y,
+                                          "Scopus",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            letterSpacing: 0.0,
+                                            color: DesignCourseAppTheme
+                                                .nearlyWhite,
+                                          ),
+                                        ),
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        color: DesignCourseAppTheme.nearlyBlue,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: DesignCourseAppTheme
+                                                  .nearlyBlue
+                                                  .withOpacity(0.5),
+                                              offset: const Offset(1.1, 1.1),
+                                              blurRadius: 10.0),
+                                        ],
+                                      ),
+                                      child: FlatButton(
+                                        onPressed:() => 
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => UnivGooglePage())), 
+                                      child:
+                                      Center(
+                                        child: Text(
+                                          "Google",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -305,7 +329,7 @@ class _UnivInfoScreenState extends State<UnivInfoScreen>
                                       ),
                                     ),
                                   )
-                                ],
+                                  )],
                               ),
                             ),
                           ),

@@ -24,21 +24,21 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
   ScrollController _scrollController;
   
   
-  int items = 1000;
-  List<Authors> authors = [];
-  Future<List<Authors>> _getAuthors(int items) async {
+  //int items = 1000;
+  
+  Future<List<Authors>> _getAuthors() async {
 
     var pref = await SharedPreferences.getInstance();
     String token = pref.getString('token');
-    print("Items = "+items.toString());
-    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/authors?items=';
+    //print("Items = "+items.toString());
+    final String baseUrl = 'http://api.sinta.ristekdikti.go.id/authors?items=10000';
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
 
-    final response = await clientListView.get("$baseUrl"+'$items', headers: headers);
+    final response = await clientListView.get("$baseUrl", headers: headers);
     print(response.statusCode.toString());
     final dataJson = jsonDecode(response.body);
     Cari data = new Cari.fromJson(dataJson);
@@ -46,12 +46,15 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
 
     //Authors({this.nidn, this.name, this.googleHindex, this.scopusHindex, this.img = 'assets/design_course/interFace1.png', });
     
-    
+    List<Authors> authors = [];
     for(var u in data.authors){
-      Authors author = Authors(u['nidn'].toString(), u['fullname'].toString(), u['affiliation']['name'].toString(), "assets/design_course/interFace1.png");
+      Authors author = Authors(u['nidn'].toString(), 
+                                u['id'].toString(), u['fullname'].toString(), 
+                                u['affiliation']['name'].toString(), 
+                                "assets/design_course/interFace1.png");
       authors.add(author);
     }
-    print(authors.length.toString());
+    //print(authors.length.toString());
     return authors;
   }
 
@@ -61,22 +64,9 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
-    _scrollController = new ScrollController(
-      initialScrollOffset: 0.0,
-    );
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-      _getAuthors(items = items + 10);
-      }
-    });
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
@@ -88,7 +78,7 @@ class _PopularAuthorListViewState extends State<PopularAuthorListView>
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FutureBuilder(
-        future: this._getAuthors(items),
+        future: this._getAuthors(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //print(snapshot.data.length.toString());
           if (snapshot.data == null) {
@@ -295,11 +285,11 @@ class CategoryView extends StatelessWidget {
 
 class Authors{
   final name;
-  
+  final authorId;
   final googleHindex;
   final img;
   final nidn;
-  Authors(this.nidn, this.name, this.googleHindex, this.img);
+  Authors(this.nidn, this.authorId, this.name, this.googleHindex, this.img);
 
 }
 
@@ -315,8 +305,8 @@ class Cari{
 
 getAuthorNIDN(category) async {
   var pref = await SharedPreferences.getInstance();
-  //print(category.nidn);
-  pref.setString("nidn", category.nidn);
+  print(category.authorId);
+  pref.setString("nidn", category.authorId);
   String isi = pref.getString("nidn");
   print("NIDN = " +isi);
   //await getAuthorNIDN(isi);

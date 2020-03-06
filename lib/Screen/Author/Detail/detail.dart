@@ -69,7 +69,7 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                         response.googleArticle.toString(), 
                                         response.scopusArticle.toString(),
                                         response.scopusCitation.toString());
-    print(response.scopusCitation);
+    //print(response.scopusCitation);
     return author;
 
   }
@@ -390,6 +390,7 @@ class _AuthorInfoScreenState extends State<AuthorInfoScreen>
                                       child: 
                                       FlatButton(onPressed: () =>
                                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ServicePage())), 
+                              
                                       child:
                                       Center(
                                         child: Text(

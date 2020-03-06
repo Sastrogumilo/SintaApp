@@ -6,7 +6,7 @@ cari='/Cari',
 listAuthor='/TampilAuthor'
 ;
 
-String default_Url = 'http://api.sinta.ristekdikti.go.id/', author_Url = 'author/detail/', journal_Url = 'journal/', affiliation_Url = 'affiliation/';
+String defaultUrl = 'http://api.sinta.ristekdikti.go.id/', authorUrl = 'author/detail/', journalUrl = 'journal/', affiliationUrl = 'affiliation/';
 
 Map<String, dynamic> routerMap = {
   '_homescreen' : '/HomeScreen',
@@ -25,18 +25,18 @@ Map<String, dynamic> routerMap = {
   '_detailjournal' : '',
 };
 
-Map<String, dynamic> endpoint_api_url = {
-  'author_all' : default_Url + 'author/',
-  'author_detail' : default_Url + author_Url + 'overview/',
-  'author_bimbingan' : default_Url + author_Url + 'bimbingan/',
-  'author_scopus' : default_Url + author_Url + 'scopus/',
-  'author_google' : default_Url + author_Url + 'google/',
-  'author_book' : default_Url + author_Url + 'book/',
-  'author_ipr' : default_Url + author_Url + 'ipr/',
-  'author_service' : default_Url + author_Url + 'service/',
-  'author_research' : default_Url + author_Url + 'research/',
-  'journal_all' : default_Url + journal_Url,
-  'journal_detail' : default_Url + journal_Url + 'detail/',
-  'affiliation_all' : default_Url + affiliation_Url,
-  'affiliation_detail' : default_Url + affiliation_Url + 'detail/',
+Map<String, dynamic> endpointApiUrl = {
+  'author_all' : defaultUrl + 'author/',
+  'author_detail' : defaultUrl + authorUrl + 'overview/',
+  'author_bimbingan' : defaultUrl + authorUrl + 'bimbingan/',
+  'author_scopus' : defaultUrl + authorUrl + 'scopus/',
+  'author_google' : defaultUrl + authorUrl + 'google/',
+  'author_book' : defaultUrl + authorUrl + 'book/',
+  'author_ipr' : defaultUrl + authorUrl + 'ipr/',
+  'author_service' : defaultUrl + authorUrl + 'service/',
+  'author_research' : defaultUrl + authorUrl + 'research/',
+  'journal_all' : defaultUrl + journalUrl,
+  'journal_detail' : defaultUrl + journalUrl + 'detail/',
+  'affiliation_all' : defaultUrl + affiliationUrl,
+  'affiliation_detail' : defaultUrl + affiliationUrl + 'detail/',
 };

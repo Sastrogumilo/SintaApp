@@ -25,7 +25,7 @@ class _ListAuthorPageState extends State<ListAuthorPage>{
     String input = pref.getString('query');
     //print(input);
     String token = pref.getString("token");
-    print("Token saat INI "+"$token");
+    //print("Token saat INI "+"$token");
 
     Map<String, String> headers = {
     "Content-Type" : "application/json",

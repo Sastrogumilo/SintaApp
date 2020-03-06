@@ -32,7 +32,7 @@ Map<String, dynamic> listData;
 getToken() async {
   final pref = await SharedPreferences.getInstance();
   token = pref.getString("token");
-  print("Token saat INI "+"$token");
+  //print("Token saat INI "+"$token");
 
   return token;
 }
@@ -75,7 +75,7 @@ getAuthorOverview(authorId) async {
   
   id = authorId;
   final response = await clientAuthor.get("$baseUrl"+"$overview"+"$id", headers: headers);
-  print("Response = "+ response.statusCode.toString());
+  //print("Response = "+ response.statusCode.toString());
   //print(response.body.toString());
   //AuthorOverview hasilData = new AuthorOverview.fromJson(data);
   //print(hasilData.name);

@@ -2,26 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:http/http.dart';
+import 'package:http/http.dart' show Client;
 
-Client clientBimbingan = Client();
+Client clientScopusUniv = Client();
 
-class BimbinganPage extends StatefulWidget {
+
+class UnivScopusPage extends StatefulWidget {
   
   @override 
-  _BimbinganPageState createState() => new _BimbinganPageState();
+  _UnivScopusPageState createState() => new _UnivScopusPageState();
 
 }
 
-class _BimbinganPageState extends State<BimbinganPage>{
 
-  Future<List<UserBimbingan>> _getBimbingan() async {
+class _UnivScopusPageState extends State<UnivScopusPage>{
+
+  Future<List<UserRiset>> _getUsers() async {
     
-    final String baseUrl = "http://api.sinta.ristekdikti.go.id/author/detail/bimbingan/";
+    final String baseUrl = "http://api.sinta.ristekdikti.go.id/affiliation/detail/scopus/";
     final String jumlah = "?items=1000";
     
     final pref = await SharedPreferences.getInstance();
-    String input = pref.getString('nidn');
+    String input = pref.getString('kodePT');
     //String input = "54481";
     //print(input);
     String token = pref.getString("token");
@@ -31,38 +33,46 @@ class _BimbinganPageState extends State<BimbinganPage>{
     "Content-Type" : "application/json",
     "Authorization" : "Bearer "+"$token",
     };
-    
+
     print("$baseUrl"+"$input"+"$jumlah");
-    final response = await clientBimbingan.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
-    //print(response.body.toString());
-    final dataJson = json.decode(response.body);
-    Bimbingan hasilBimbingan = new Bimbingan.fromJson(dataJson);
+    final response = await clientScopusUniv.get("$baseUrl"+"$input"+"$jumlah", headers: headers);
+    print(response.body.toString());
+    final dataJson = jsonDecode(response.body);
+    Riset hasil = new Riset.fromJson(dataJson);
     //var jsonData = hasil.result; //Data Hasil Olahan
     //print(hasil.result);
     //print(hasil.author);
     
     //List<UserBimbingan> bimbingan = [];
-    List<UserBimbingan> bimbingans = [];
-    for(var u in hasilBimbingan.resultBimbingan){
-      UserBimbingan bimbingan = UserBimbingan(u['dc_title'].toString(), 
-                                              u['dc_subject'].toString(), 
-                                              u['dc_description'].toString(),
-                                              );
-      bimbingans.add(bimbingan);
+    List<UserRiset> risets = [];
+    for(var u in hasil.result){
+      UserRiset riset = UserRiset(u['title'].toString(), 
+                                  u['quartile'].toString(), 
+                                  u['publicationName'].toString(), 
+                                  u['creator'].toString(), 
+                                  u['issn'].toString(), 
+                                  u['coverDisplayDate'].toString(),
+                                  u['doi'].toString(),
+                                  u['citedby_count'].toString(),
+                                  u['aggregationType'].toString(),
+
+                                );
+      risets.add(riset);
     }
     //print(users);
     //print(users.length);
-    return bimbingans; 
+    return risets; 
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('Daftar Artikel Bimbingan'),
+        title: new Text('Daftar Scopus Author'),
         leading: new IconButton(icon: new Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context))),
         body: Container(
           child: FutureBuilder(
-            future: _getBimbingan(),
+            future: _getUsers(),
             builder: (BuildContext context, AsyncSnapshot snapshot){
               switch(snapshot.connectionState){
                 case ConnectionState.none:
@@ -72,17 +82,16 @@ class _BimbinganPageState extends State<BimbinganPage>{
                   child: CircularProgressIndicator());
                   
                 case ConnectionState.done:
-                
-              //print(snapshot.data.toString());
-              if(snapshot.data.length == 0){
-                return SizedBox(
+              //print(snapshot.data);
+              if(snapshot.data.length == 0 || snapshot.data == null){
+                return Container(
                   child: Center(
-                    child: Text("Author Belum Pernah Membimbing")));
+                    child: Text("Tidak Ada Data", textAlign: TextAlign.center,)));
               } else if (snapshot.hasError){
                   return Container(
                   child: Center(
                     child: Text('Error: ${snapshot.error}')));}
-              }return ListView.builder(
+              } return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
                     
@@ -94,7 +103,8 @@ class _BimbinganPageState extends State<BimbinganPage>{
                        ),
                       ),
                        title: Text(snapshot.data[index].judul),
-                       subtitle: Text(snapshot.data[index].subject),
+                       subtitle: Text(snapshot.data[index].coverDisplayDate),
+                       isThreeLine: true,
                        onTap: (){
                          //idTap(snapshot.data[index]);
                          Navigator.push(context, 
@@ -104,15 +114,14 @@ class _BimbinganPageState extends State<BimbinganPage>{
                       );
                     },
                 );
-              } 
-            ),
+            }),
         ),
       );
   }
 }
 
 class DetailPage extends StatelessWidget{
-  final UserBimbingan user;
+  final UserRiset user;
 
   DetailPage(this.user);
   
@@ -131,35 +140,66 @@ class DetailPage extends StatelessWidget{
         title: Text(user.judul),
       ),
       body: Container(
-        child: Text(user.deskripsi),
+        child: Column(
+         //crossAxisAlignment: CrossAxisAlignment.baseline,
+          children: <Widget>[
+        Text("Judul = " + user.judul),
+        Text("Quartile = "+user.quartile),
+        Text("Nama Publikator = "+user.publicationName),
+        Text("Pembuat = "+user.creator),
+        Text("ISSN = "+user.issn),
+        Text("Tanggal Terbit = "+user.coverDisplayDate),
+        Text("DOI = "+user.doi),
+        Text("Total Sitasi = "+user.totalCitasi),
+        Text("Aggregasi = "+user.aggregationType),
+        
+
+        ],),
       ),
     );
   }
+
 }
 
-class UserBimbingan {
+class UserRiset {
   final judul;
-  final subject;
-  final deskripsi;
+  final quartile;
+  final publicationName;
+  final creator;
+  final issn;
+  final coverDisplayDate;
+  final doi;
+  final totalCitasi;
+  final aggregationType;
 
-  UserBimbingan(this.judul, this.subject, this.deskripsi, );
+
+
+  UserRiset(this.judul, 
+            this.quartile, 
+            this.publicationName, 
+            this.creator, 
+            this.issn, 
+            this.coverDisplayDate, 
+            this.doi,
+            this.totalCitasi,
+            this.aggregationType,
+            //this.tanggalPublikasi,
+            );
 }
 
 
-class Bimbingan{
-  final resultBimbingan;
-  //final List<Authors>author;
+class Riset{
+  final result;
   
-  Bimbingan({
-    this.resultBimbingan, 
-    //this.author
+  Riset({
+    this.result, 
+
   });
 
-  factory Bimbingan.fromJson(Map<String, dynamic> parsedJson){
-
-    return Bimbingan(resultBimbingan: parsedJson['author']['bimbingan']['article'],
+  factory Riset.fromJson(Map<String, dynamic> parsedJson){
+   return Riset(result: parsedJson['afiliasi']['scopus']['article'],
                       //author: listAuthor,
-                    );
+                  );
   }
 }
 
