@@ -67,26 +67,26 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
       domainFn: (Asean.LinearSales sales, _) => sales.year,
       measureFn: (Asean.LinearSales sales, _) => sales.sales,
       data: [
-          new Asean.LinearSales(0, 1739),
-          new Asean.LinearSales(1, 1522),
-          new Asean.LinearSales(2, 1875),
-          new Asean.LinearSales(3, 2433),
-          new Asean.LinearSales(4, 2844),
-          new Asean.LinearSales(5, 3451),
-          new Asean.LinearSales(6, 4522),
-          new Asean.LinearSales(7, 5514),
-          new Asean.LinearSales(8, 8206),
-          new Asean.LinearSales(9, 11442),
-          new Asean.LinearSales(10, 15690),
-          new Asean.LinearSales(11, 20699),
-          new Asean.LinearSales(12, 20699),
-          new Asean.LinearSales(13, 25620),
-          new Asean.LinearSales(14, 29095),
-          new Asean.LinearSales(15, 27950),
-          new Asean.LinearSales(16, 30573),
-          new Asean.LinearSales(17, 33178),
-          new Asean.LinearSales(18, 33481),
-          new Asean.LinearSales(19, 35697),
+          new Asean.LinearSales(2000, 1739),
+          new Asean.LinearSales(2001, 1522),
+          new Asean.LinearSales(2002, 1875),
+          new Asean.LinearSales(2003, 2433),
+          new Asean.LinearSales(2004, 2844),
+          new Asean.LinearSales(2005, 3451),
+          new Asean.LinearSales(2006, 4522),
+          new Asean.LinearSales(2007, 5514),
+          new Asean.LinearSales(2008, 8206),
+          new Asean.LinearSales(2009, 11442),
+          new Asean.LinearSales(2010, 15690),
+          new Asean.LinearSales(2011, 20699),
+          new Asean.LinearSales(2012, 20699),
+          new Asean.LinearSales(2013, 25620),
+          new Asean.LinearSales(2014, 29095),
+          new Asean.LinearSales(2015, 27950),
+          new Asean.LinearSales(2016, 30573),
+          new Asean.LinearSales(2017, 33178),
+          new Asean.LinearSales(2018, 33481),
+          new Asean.LinearSales(2019, 35697),
       ],
     ),
     new charts.Series<Asean.LinearSales, int>(
@@ -95,26 +95,26 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
       domainFn: (Asean.LinearSales sales, _) => sales.year,
       measureFn: (Asean.LinearSales sales, _) => sales.sales,
       data: [
-          new Asean.LinearSales(0, 579),
-          new Asean.LinearSales(1, 467),
-          new Asean.LinearSales(2, 617),
-          new Asean.LinearSales(3, 722),
-          new Asean.LinearSales(4, 674),
-          new Asean.LinearSales(5, 889),
-          new Asean.LinearSales(6, 902),
-          new Asean.LinearSales(7, 1002),
-          new Asean.LinearSales(8, 1098),
-          new Asean.LinearSales(9, 1223),
-          new Asean.LinearSales(10, 1337),
-          new Asean.LinearSales(11, 1593),
-          new Asean.LinearSales(12, 1752),
-          new Asean.LinearSales(13, 1973),
-          new Asean.LinearSales(14, 2269),
-          new Asean.LinearSales(15, 2769),
-          new Asean.LinearSales(16, 3136),
-          new Asean.LinearSales(17, 3590),
-          new Asean.LinearSales(18, 3851),
-          new Asean.LinearSales(19, 5065),
+          new Asean.LinearSales(2000, 579),
+          new Asean.LinearSales(2001, 467),
+          new Asean.LinearSales(2002, 617),
+          new Asean.LinearSales(2003, 722),
+          new Asean.LinearSales(2004, 674),
+          new Asean.LinearSales(2005, 889),
+          new Asean.LinearSales(2006, 902),
+          new Asean.LinearSales(2007, 1002),
+          new Asean.LinearSales(2008, 1098),
+          new Asean.LinearSales(2009, 1223),
+          new Asean.LinearSales(2010, 1337),
+          new Asean.LinearSales(2011, 1593),
+          new Asean.LinearSales(2012, 1752),
+          new Asean.LinearSales(2013, 1973),
+          new Asean.LinearSales(2014, 2269),
+          new Asean.LinearSales(2015, 2769),
+          new Asean.LinearSales(2016, 3136),
+          new Asean.LinearSales(2017, 3590),
+          new Asean.LinearSales(2018, 3851),
+          new Asean.LinearSales(2019, 5065),
       ],
     ),
     new charts.Series<Asean.LinearSales, int>(
@@ -123,26 +123,26 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
       domainFn: (Asean.LinearSales sales, _) => sales.year,
       measureFn: (Asean.LinearSales sales, _) => sales.sales,
       data: [
-          new Asean.LinearSales(0, 5964),
-          new Asean.LinearSales(1, 6146),
-          new Asean.LinearSales(2, 6928),
-          new Asean.LinearSales(3, 8229),
-          new Asean.LinearSales(4, 9911),
-          new Asean.LinearSales(5, 10957),
-          new Asean.LinearSales(6, 11783),
-          new Asean.LinearSales(7, 12223),
-          new Asean.LinearSales(8, 13300),
-          new Asean.LinearSales(9, 14031),
-          new Asean.LinearSales(10, 15715),
-          new Asean.LinearSales(11, 16702),
-          new Asean.LinearSales(12, 18359),
-          new Asean.LinearSales(13, 19436),
-          new Asean.LinearSales(14, 20118),
-          new Asean.LinearSales(15, 20733),
-          new Asean.LinearSales(16, 21908),
-          new Asean.LinearSales(17, 22782),
-          new Asean.LinearSales(18, 22694),
-          new Asean.LinearSales(19, 22969),
+          new Asean.LinearSales(2000, 5964),
+          new Asean.LinearSales(2001, 6146),
+          new Asean.LinearSales(2002, 6928),
+          new Asean.LinearSales(2003, 8229),
+          new Asean.LinearSales(2004, 9911),
+          new Asean.LinearSales(2005, 10957),
+          new Asean.LinearSales(2006, 11783),
+          new Asean.LinearSales(2007, 12223),
+          new Asean.LinearSales(2008, 13300),
+          new Asean.LinearSales(2009, 14031),
+          new Asean.LinearSales(2010, 15715),
+          new Asean.LinearSales(2011, 16702),
+          new Asean.LinearSales(2012, 18359),
+          new Asean.LinearSales(2013, 19436),
+          new Asean.LinearSales(2014, 20118),
+          new Asean.LinearSales(2015, 20733),
+          new Asean.LinearSales(2016, 21908),
+          new Asean.LinearSales(2017, 22782),
+          new Asean.LinearSales(2018, 22694),
+          new Asean.LinearSales(2019, 22969),
       ],
     ),
     new charts.Series<Asean.LinearSales, int>(
@@ -151,26 +151,26 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
       domainFn: (Asean.LinearSales sales, _) => sales.year,
       measureFn: (Asean.LinearSales sales, _) => sales.sales,
       data: [
-          new Asean.LinearSales(0, 2252),
-          new Asean.LinearSales(1, 2336),
-          new Asean.LinearSales(2, 2912),
-          new Asean.LinearSales(3, 3368),
-          new Asean.LinearSales(4, 3991),
-          new Asean.LinearSales(5, 5066),
-          new Asean.LinearSales(6, 6107),
-          new Asean.LinearSales(7, 6862),
-          new Asean.LinearSales(8, 8055),
-          new Asean.LinearSales(9, 8648),
-          new Asean.LinearSales(10, 10095),
-          new Asean.LinearSales(11, 10877),
-          new Asean.LinearSales(12, 12277),
-          new Asean.LinearSales(13, 12532),
-          new Asean.LinearSales(14, 13752),
-          new Asean.LinearSales(15, 13152),
-          new Asean.LinearSales(16, 14927),
-          new Asean.LinearSales(17, 16760),
-          new Asean.LinearSales(18, 18769),
-          new Asean.LinearSales(19, 19431),
+          new Asean.LinearSales(2000, 2252),
+          new Asean.LinearSales(2001, 2336),
+          new Asean.LinearSales(2002, 2912),
+          new Asean.LinearSales(2003, 3368),
+          new Asean.LinearSales(2004, 3991),
+          new Asean.LinearSales(2005, 5066),
+          new Asean.LinearSales(2006, 6107),
+          new Asean.LinearSales(2007, 6862),
+          new Asean.LinearSales(2008, 8055),
+          new Asean.LinearSales(2009, 8648),
+          new Asean.LinearSales(2010, 10095),
+          new Asean.LinearSales(2011, 10877),
+          new Asean.LinearSales(2012, 12277),
+          new Asean.LinearSales(2013, 12532),
+          new Asean.LinearSales(2014, 13752),
+          new Asean.LinearSales(2015, 13152),
+          new Asean.LinearSales(2016, 14927),
+          new Asean.LinearSales(2017, 16760),
+          new Asean.LinearSales(2018, 18769),
+          new Asean.LinearSales(2019, 19431),
       ],
     ),
     new charts.Series<Asean.LinearSales, int>(
@@ -179,31 +179,32 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
       domainFn: (Asean.LinearSales sales, _) => sales.year,
       measureFn: (Asean.LinearSales sales, _) => sales.sales,
       data: [
-          new Asean.LinearSales(0, 398),
-          new Asean.LinearSales(1, 435),
-          new Asean.LinearSales(2, 440),
-          new Asean.LinearSales(3, 661),
-          new Asean.LinearSales(4, 704),
-          new Asean.LinearSales(5, 849),
-          new Asean.LinearSales(6, 986),
-          new Asean.LinearSales(7, 1149),
-          new Asean.LinearSales(8, 1540),
-          new Asean.LinearSales(9, 1747),
-          new Asean.LinearSales(10, 2162),
-          new Asean.LinearSales(11, 2380),
-          new Asean.LinearSales(12, 3134),
-          new Asean.LinearSales(13, 3743),
-          new Asean.LinearSales(14, 4033),
-          new Asean.LinearSales(15, 4483),
-          new Asean.LinearSales(16, 5818),
-          new Asean.LinearSales(17, 6646),
-          new Asean.LinearSales(18, 8765),
-          new Asean.LinearSales(19, 12446),
+          new Asean.LinearSales(2000, 398),
+          new Asean.LinearSales(2001, 435),
+          new Asean.LinearSales(2002, 440),
+          new Asean.LinearSales(2003, 661),
+          new Asean.LinearSales(2004, 704),
+          new Asean.LinearSales(2005, 849),
+          new Asean.LinearSales(2006, 986),
+          new Asean.LinearSales(2007, 1149),
+          new Asean.LinearSales(2008, 1540),
+          new Asean.LinearSales(2009, 1747),
+          new Asean.LinearSales(2010, 2162),
+          new Asean.LinearSales(2011, 2380),
+          new Asean.LinearSales(2012, 3134),
+          new Asean.LinearSales(2013, 3743),
+          new Asean.LinearSales(2014, 4033),
+          new Asean.LinearSales(2015, 4483),
+          new Asean.LinearSales(2016, 5818),
+          new Asean.LinearSales(2017, 6646),
+          new Asean.LinearSales(2018, 8765),
+          new Asean.LinearSales(2019, 12446),
       ],
     ),
-    
   ];  
 
+  Map<String, dynamic> listDataAseanMap;
+  List<charts.Series<Asean.LinearSales, num>> dataLinearAsean = [];
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
@@ -211,12 +212,12 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
   }
 
   fetchAsean()async{
-  var pref = await SharedPreferences.getInstance();
-  String token = pref.getString('token');
+    var pref = await SharedPreferences.getInstance();
+    String token = pref.getString('token');
 
-  Map<String, String> headers = {
-    "Content-Type" : "application/json",
-    "Authorization" : "Bearer "+"$token",
+    Map<String, String> headers = {
+      "Content-Type" : "application/json",
+      "Authorization" : "Bearer "+"$token",
     };
     //print(token);
     
@@ -229,24 +230,56 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
   Mapping map = new Mapping.fromJson(jsonData);
   print(map.data['ID']['2000']);
   
-  AseanMap aseanMap = AseanMap(map.data['ID'], 
+  /*AseanMap aseanMap = AseanMap(map.data['ID'], 
                                 map.data['MY'], 
                                 map.data['PH'], 
                                 map.data['SG'], 
                                 map.data['TH'], 
                                 map.data['VN'],
                                 );
+    
     indo = Tahun(aseanMap.indo['2000'], aseanMap.indo['2001'], aseanMap.indo['2002'], aseanMap.indo['2003'], aseanMap.indo['2004'], aseanMap.indo['2005'], aseanMap.indo['2006'], aseanMap.indo['2007'], aseanMap.indo['2008'], aseanMap.indo['2009'], aseanMap.indo['2010'], aseanMap.indo['2011'], aseanMap.indo['2012'], aseanMap.indo['2013'], aseanMap.indo['2014'], aseanMap.indo['2015'], aseanMap.indo['2016'], aseanMap.indo['2017'], aseanMap.indo['2018'], aseanMap.indo['2019']);
     myanmar = Tahun(aseanMap.myanmar['2000'], aseanMap.myanmar['2001'], aseanMap.myanmar['2002'], aseanMap.myanmar['2003'], aseanMap.myanmar['2004'], aseanMap.myanmar['2005'], aseanMap.myanmar['2006'], aseanMap.myanmar['2007'], aseanMap.myanmar['2008'], aseanMap.myanmar['2009'], aseanMap.myanmar['2010'], aseanMap.myanmar['2011'], aseanMap.myanmar['2012'], aseanMap.myanmar['2013'], aseanMap.myanmar['2014'], aseanMap.myanmar['2015'], aseanMap.myanmar['2016'], aseanMap.myanmar['2017'], aseanMap.myanmar['2018'], aseanMap.myanmar['2019']);
     pinoy = Tahun(aseanMap.pinoy['2000'], aseanMap.pinoy['2001'], aseanMap.pinoy['2002'], aseanMap.pinoy['2003'], aseanMap.pinoy['2004'], aseanMap.pinoy['2005'], aseanMap.pinoy['2006'], aseanMap.pinoy['2007'], aseanMap.pinoy['2008'], aseanMap.pinoy['2009'], aseanMap.pinoy['2010'], aseanMap.pinoy['2011'], aseanMap.pinoy['2012'], aseanMap.pinoy['2013'], aseanMap.pinoy['2014'], aseanMap.pinoy['2015'], aseanMap.pinoy['2016'], aseanMap.pinoy['2017'], aseanMap.pinoy['2018'], aseanMap.pinoy['2019']);
     singapura = Tahun(aseanMap.singapure['2000'], aseanMap.singapure['2001'], aseanMap.singapure['2002'], aseanMap.singapure['2003'], aseanMap.singapure['2004'], aseanMap.singapure['2005'], aseanMap.singapure['2006'], aseanMap.singapure['2007'], aseanMap.singapure['2008'], aseanMap.singapure['2009'], aseanMap.singapure['2010'], aseanMap.singapure['2011'], aseanMap.singapure['2012'], aseanMap.singapure['2013'], aseanMap.singapure['2014'], aseanMap.singapure['2015'], aseanMap.singapure['2016'], aseanMap.singapure['2017'], aseanMap.singapure['2018'], aseanMap.singapure['2019']);
     thailand = Tahun(aseanMap.thailand['2000'], aseanMap.thailand['2001'], aseanMap.thailand['2002'], aseanMap.thailand['2003'], aseanMap.thailand['2004'], aseanMap.thailand['2005'], aseanMap.thailand['2006'], aseanMap.thailand['2007'], aseanMap.thailand['2008'], aseanMap.thailand['2009'], aseanMap.thailand['2010'], aseanMap.thailand['2011'], aseanMap.thailand['2012'], aseanMap.thailand['2013'], aseanMap.thailand['2014'], aseanMap.thailand['2015'], aseanMap.thailand['2016'], aseanMap.thailand['2017'], aseanMap.thailand['2018'], aseanMap.thailand['2019']);
-    vietman = Tahun(aseanMap.vietman['2000'], aseanMap.vietman['2001'], aseanMap.vietman['2002'], aseanMap.vietman['2003'], aseanMap.vietman['2004'], aseanMap.vietman['2005'], aseanMap.vietman['2006'], aseanMap.vietman['2007'], aseanMap.vietman['2008'], aseanMap.vietman['2009'], aseanMap.vietman['2010'], aseanMap.vietman['2011'], aseanMap.vietman['2012'], aseanMap.vietman['2013'], aseanMap.vietman['2014'], aseanMap.vietman['2015'], aseanMap.vietman['2016'], aseanMap.vietman['2017'], aseanMap.vietman['2018'], aseanMap.vietman['2019']);
+    vietman = Tahun(aseanMap.vietman['2000'], aseanMap.vietman['2001'], aseanMap.vietman['2002'], aseanMap.vietman['2003'], aseanMap.vietman['2004'], aseanMap.vietman['2005'], aseanMap.vietman['2006'], aseanMap.vietman['2007'], aseanMap.vietman['2008'], aseanMap.vietman['2009'], aseanMap.vietman['2010'], aseanMap.vietman['2011'], aseanMap.vietman['2012'], aseanMap.vietman['2013'], aseanMap.vietman['2014'], aseanMap.vietman['2015'], aseanMap.vietman['2016'], aseanMap.vietman['2017'], aseanMap.vietman['2018'], aseanMap.vietman['2019']);*/
     
+    listDataAseanMap = map.data;
+
+    setState(() {
+      parseData(listDataAseanMap);
+    });
   }
   
+  void parseData(Map<String, dynamic> data){
+    var i = 0;
+    List<String> name = ['INDONESIA', 'MALAYSIA', 'PHILIPINE', 'SINGAPORE', 'THAILAND', 'VIETNAM'];
+    List<String> id = ['ID', 'MY', 'PH', 'SG', 'TH', 'VN'];
+    for (var i = 0; i < data.length; i++) {
+      print("=================================================== PARSE DATA SEARCH ==================================================");
+      //print(data[id[i]]);
+      dataLinearAsean.add(
+        new charts.Series<Asean.LinearSales, int>(
+          id: name[i],
+          colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+          domainFn: (Asean.LinearSales sales, _) => sales.year,
+          measureFn: (Asean.LinearSales sales, _) => sales.sales,
+          data: generateDataAsean(data[id[i]]),
+        ),
+      );
+    }
+  }
 
-
+  List generateDataAsean(Map<String, dynamic> data){
+    List<Asean.LinearSales> hasil = [];
+    data.forEach((key, item)=>{
+      hasil.add(new Asean.LinearSales(int.parse(key.substring(3)), int.parse(item))),
+      print(key + " : " + item)
+    });
+    print(hasil.length);
+    return hasil;
+  }
   @override
   void initState() {
     fetchAsean();
@@ -278,7 +311,8 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
                   child: Asean.StackedAreaLineChart(
-                    dataLinear,
+                    //dataLinear,
+                    dataLinearAsean,
                     widget.titleTxt,
                   ),
                 ),
@@ -292,6 +326,12 @@ class WidgetThemesState extends State<WidgetThemes> with TickerProviderStateMixi
   }
 
 }
+
+class DataAseanMap{
+  final data;
+  DataAseanMap(this.data);
+}
+
 class AseanMap{
   final indo;
   final myanmar;

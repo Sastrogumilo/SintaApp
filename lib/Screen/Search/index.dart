@@ -66,7 +66,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
     
     listViews.add(
       AseanBenchmark.WidgetThemes(
-        titleTxt: 'ASEAN TEST',
+        titleTxt: 'ASEAN BENCHMARK',
         subTxt: 'Details',
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
@@ -77,7 +77,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
       ),
     );
 
-    listViews.add(
+    /*listViews.add(
       AuthorBenchmark.WidgetThemes(
         titleTxt: 'Test2',
         subTxt: 'Details',
@@ -88,7 +88,7 @@ class ScreenLayoutState extends State<ScreenLayout> with TickerProviderStateMixi
                     curve: Curves.fastOutSlowIn))),
         mainScreenAnimationController: widget.animationController,
       ),
-    );
+    );*/
   }
 
   @override
